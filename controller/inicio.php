@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       
     // Redirigir según el id_rol
     if ($fila['id_rol'] == 1) {
-      header("location: ../view/admin/index.html");
+      header("location: ../view/admin/index.php");
     } elseif ($fila['id_rol'] == 2) {
       header("location: ../view/cliente/index.php");
     } else {
