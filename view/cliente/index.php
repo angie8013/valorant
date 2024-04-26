@@ -111,7 +111,7 @@ $conexion = null;
 
         <div class="sidebar-menu">
             <div class="top-menu">
-             <a href="sala.php" class="sidebar-link">
+             <a href="mapa.php" class="sidebar-link">
                 <i class='bx bxs-joystick' ></i>
                     <span>Jugar</span>
              </a>
