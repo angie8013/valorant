@@ -1,11 +1,11 @@
 ﻿<?php
-session_start();
 
 
-require_once("../../db/conexion_2.php");
+
+require_once("../../db/conection.php");
 $db = new Database();
 $con = $db->conectar();
-
+session_start();
 // Consulta para obtener los datos de detalle_batalla
 $sql = "SELECT * FROM detalle_batalla";
 $resultado = $con->query($sql);
@@ -37,10 +37,17 @@ function obtenerNombreJugador($username, $con)
     $stmt = $con->prepare($sql);
     $stmt->bindParam(':username', $username);
     $stmt->execute();
-    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $resultado['nombre'];
+    
+    // Verificar si la consulta devolvió resultados
+    if ($stmt->rowCount() > 0) {
+        // Fetch the result
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado['nombre'];
+    } else {
+        // Si la consulta no devuelve resultados, puedes devolver un valor predeterminado o lanzar una excepción según tus necesidades
+        return "Nombre no encontrado"; // o lanzar una excepción
+    }
 }
-
 // Función para obtener el nombre del arma por su ID
 function obtenerNombreArma($id_arma, $con)
 {
@@ -49,7 +56,13 @@ function obtenerNombreArma($id_arma, $con)
     $stmt->bindParam(':id', $id_arma);
     $stmt->execute();
     $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $resultado['nombre'];
+    // Verificar si la consulta devolvió resultados
+    if ($resultado) {
+        return $resultado['nombre'];
+    } else {
+        // Si la consulta no devuelve resultados, puedes devolver un valor predeterminado o lanzar una excepción según tus necesidades
+        return "Nombre de arma no encontrado"; // o lanzar una excepción
+    }
 }
 
 // Función para obtener el nombre del agente por su ID
@@ -60,8 +73,15 @@ function obtenerNombreAgente($id_agente, $con)
     $stmt->bindParam(':id', $id_agente);
     $stmt->execute();
     $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $resultado['nombre'];
+    // Verificar si la consulta devolvió resultados
+    if ($resultado) {
+        return $resultado['nombre'];
+    } else {
+        // Si la consulta no devuelve resultados, puedes devolver un valor predeterminado o lanzar una excepción según tus necesidades
+        return "Nombre de agente no encontrado"; // o lanzar una excepción
+    }
 }
+
 
 // Cerrar la conexión
 //$con = null; // No cierres la conexión aquí para usarla en las funciones
