@@ -15,8 +15,8 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Verificar si se recibieron los datos del formulario
-if (isset($_POST['jugador_atacante']) && isset($_POST['id_detalle'])) {
-    $id_detalle = $_POST["id_detalle"];
+if (isset($_POST['jugador_atacante']) && isset($_GET['id_detalle'])) {
+    $id_detalle = $_GET['id_detalle']; // Cambiado a $_GET
     $id_jugador_atacado = $_POST["jugador_atacante"];
 
     try {

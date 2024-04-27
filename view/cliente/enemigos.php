@@ -14,13 +14,10 @@ if (!isset($_SESSION['username'])) {
     die();
 }
 
-
-
 // Verificar si se recibió el id_detalle a través de la URL
 if (isset($_GET['id_detalle'])) {
     $id_detalle = $_GET['id_detalle'];
     $username = $_SESSION['username'];
-
 
     try {
         // Consulta SQL para obtener los jugadores con el mismo id_sala
@@ -40,11 +37,8 @@ if (isset($_GET['id_detalle'])) {
     exit();
 }
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,36 +50,36 @@ if (isset($_GET['id_detalle'])) {
 </head>
 
 <body>
-
     <div class="contenedor">
-        <form action="">
+    <form action="enemigo_up.php" method="post">    
             <div class="selectbox">
-                <select class="select" id="select">
+                <div class="select" id="select">
                     <div class="contenido-select">
-                        
+                        <h1 class="titulo">Selecciona a tu oponente</h1>
                     </div>
                     <i class="fas fa-angle-down"></i>
-                </select>
-
-
-            </div>
-            <div class="opciones" id="opciones">
-            <div class="contenido-opcion">
-                <img src="img/mexico.png" alt="">
-                <div class="textos">
-                <?php
+                </div>
+                
+                <div class="opciones" id="opciones">
+                    <div class="contenido-opcion">
+                        <?php
+                        // Iterar sobre los datos obtenidos de la base de datos para generar opciones
                         while ($row = $stmt_jugadores->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<option value="' . $row['id_jugador_atacante'] . '">' . $row['id_jugador_atacante'] . '</option>';
+                            ?>
+                            <button class="contenido-opcion" type="submit" name="jugador_atacante" value="<?php echo $row['id_jugador_atacante']; ?>">
+                                <div class="opcion">
+                                    <h1 class="titulo"><?php echo $row['id_jugador_atacante']; ?></h1>
+                                </div>
+                            </button>
+                        <?php
                         }
                         ?>
+                    </div>
                 </div>
-            </div>
             </div>
         </form>
     </div>
-    
 
     <script src="../../js/main_2.js"></script>
 </body>
-
 </html>

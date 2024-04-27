@@ -44,7 +44,7 @@ try {
 			<div class="selectbox">
 				<div class="select" id="select">
 					<div class="contenido-select">
-						<h1 class="titulo">Selecciona tu pais</h1>
+						 
 						<p class="descripcion">Lorem ipsum dolor sit.</p>
 					</div>
 					<i class="fas fa-angle-down"></i>
