@@ -46,7 +46,7 @@ if (isset($_POST['elegir_sala']) && isset($_POST['id_sala'])) {
         $con = null;
 
         // Redireccionar a la página de selección de armas, pasando el id_detalle como parámetro
-        header("Location: armas.php?id_detalle=$id_detalle");
+        header("Location: enemigos.php?id_detalle=$id_detalle");
         exit();
     } catch(PDOException $e) {
         // Si hay algún error, redireccionar a la página de error con un mensaje específico
