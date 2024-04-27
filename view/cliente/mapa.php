@@ -13,22 +13,20 @@ if (!isset($_SESSION['username'])) {
     die();
 }
 
-// Obtener el nivel del jugador
-$username = $_SESSION['username'];
-$stmt = $con->prepare("SELECT id_puntos FROM jugador WHERE username = :username");
-$stmt->bindParam(':username', $username);
-$stmt->execute();
-$jugador = $stmt->fetch(PDO::FETCH_ASSOC);
-$nivel_jugador = $jugador['id_puntos'];
+try {
+    // Consulta para obtener los IDs de las salas y sus respectivos mundos
+    $sql = "SELECT sala.id_sala, mundo.nombre AS nombre_mundo, mundo.mundo AS imagen_mundo 
+            FROM sala 
+            INNER JOIN mundo ON sala.id_mundo = mundo.id_mundo 
+            WHERE sala.nivel = (SELECT id_puntos FROM jugador WHERE username = :username)";
+    $stmt = $con->prepare($sql);
+    $stmt->bindParam(':username', $_SESSION['username']);
+    $stmt->execute();
 
-// Consulta para obtener las armas del mismo nivel que el jugador
-$puntos = $con->prepare("SELECT * FROM mundo WHERE nivel <= :nivel_jugador");
+    // Contar el número de filas devueltas
+    $num_rows = $stmt->rowCount();
 
-// Bind parameters
-$puntos->bindParam(':nivel_jugador', $nivel_jugador);
-
-// Ejecutamos la consulta
-$puntos->execute();
+    // Generar tarjetas para cada ID de sala obtenido de la base de datos
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,9 +36,8 @@ $puntos->execute();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../css/mapa.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
- 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
 
@@ -48,42 +45,43 @@ $puntos->execute();
     <div class="container">
         <h1>MAPAS</h1>
         <div class="card__container">
-            
-        <?php
-            if ($puntos->rowCount() > 0) {
-                // Iteramos sobre cada resultado para mostrar las tarjetas
-                while ($info = $puntos->fetch(PDO::FETCH_ASSOC)) {
-                    ?>
+
+            <?php
+            // Generar tarjetas para cada ID de sala obtenido de la base de datos
+            if ($num_rows > 0) {
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $id_sala = $row["id_sala"];
+                    $nombre_mundo = $row["nombre_mundo"];
+                    $imagen_mundo = $row["imagen_mundo"];
+            ?>
                     <article class="card__article">
-                        <?php echo "<img src='data:image/jpeg; base64," . base64_encode($info['mundo']) . "'>"; ?>
+                        <img src='data:image/jpeg;base64,<?php echo base64_encode($imagen_mundo); ?>' alt="Mapa de <?php echo $nombre_mundo; ?>">
                         <div class="card__data">
                             <div class="card__description">
-                                <h2 class="card-title">Mapa nivel <?php echo $info['nivel']; ?></h2>
-                                <strong class="card-text">Nombre: <?php echo $info['nombre']; ?></strong> <br>
-                                   
-                                <!-- Agrega más información de ser necesario -->
-                                <form action="mapa_select.php" method="post">
-                    <button class="card__button" type="submit" name="valor" value="<?php echo $info['id_mundo']; ?>">Elegir mapa</button>
-                    </form>
+                                <h2 class="card-title">Mapa nivel <?php echo $id_sala; ?></h2>
+                                <strong class="card-text">Nombre: <?php echo $nombre_mundo; ?></strong> <br>
+                                <form action="select_sala.php" method="post">
+                                    <input type="hidden" name="id_sala" value="<?php echo $id_sala; ?>">
+                                    <button class="card__button" type="submit" name="elegir_sala">Elegir sala</button>
+                                </form>
                             </div>
                         </div>
                     </article>
-                    <?php
+                <?php
                 }
             } else {
                 // No se encontraron resultados
-                echo "No hay armas registradas.";
+                echo "No hay mapas registrados.";
             }
-            ?>
-            
+        } catch (PDOException $e) {
+            echo "Error de conexión: " . $e->getMessage();
+        }
+
+        // Cerrar la conexión
+        $con = null; // Cerrar la conexión
+        ?>
         </div>
-        
     </div>
-     <center><button class="valorant-btn" >
-        <span class="underlay">
-         <a> </a>
-        </span>
-      </button></center>
 </body>
 
 </html>

@@ -4,19 +4,6 @@ session_start();
 require_once("../../db/conection.php");
 $db = new Database();
 $con = $db->conectar();
-date_default_timezone_set('America/Bogota');
-
-$tiempo = date("Y-m-d H:i:s", strtotime("-5 minutes"));
-
-try {
-    // Eliminar las salas que hayan excedido el límite de tiempo
-    $stmt_delete = $con->prepare("DELETE FROM sala WHERE tiempo < :tiempo");
-    $stmt_delete->bindParam(':tiempo', $tiempo);
-    $stmt_delete->execute();
-} catch(PDOException $e) {
-    // Manejar errores si es necesario
-    echo "Error: " . $e->getMessage();
-}
 
 try {
 

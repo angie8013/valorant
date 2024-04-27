@@ -3,11 +3,11 @@ session_start();
 
 
 
-require_once("../../db/conexion_2.php");
+require_once("../../db/conection.php");
 $db = new Database();
 $con = $db->conectar();
 
-$sql = "SELECT j.username, j.correo, j.nombre, j.username, j.contrasena, r.rol, e.estado, j.ult_ini  
+$sql = "SELECT  j.correo, j.nombre, j.username, j.contrasena, r.rol, e.estado, j.ult_ini  
         FROM jugador j
         INNER JOIN rol r ON j.id_rol = r.id_rol
         INNER JOIN estado e ON j.id_estado = e.id_estado
