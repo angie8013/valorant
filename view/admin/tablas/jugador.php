@@ -176,7 +176,7 @@ $resultado = $con->query($sql);
     if ($resultado->rowCount() > 0) {
         while ($fila = $resultado->fetch(PDO::FETCH_ASSOC)) {
             echo "<tr>";
-            echo "<td>" . $fila['id_jugador'] . "</td>";
+            echo "<td>" . $fila['username'] . "</td>";
             echo "<td>" . $fila['correo'] . "</td>";
             echo "<td>" . $fila['nombre'] . "</td>";
             echo "<td>" . $fila['username'] . "</td>";
@@ -184,7 +184,7 @@ $resultado = $con->query($sql);
             echo "<td>" . $fila['nombre_estado'] . "</td>"; // Mostrar el nombre del estado
             echo "<td>" . $fila['puntos'] . "</td>";
             echo "<td>";
-            echo "<a href='../update/editar_jugador.php?id={$fila['id_jugador']}' class='btn btn-primary' onclick=\"window.open('../update/editar_jugador.php?id={$fila['id_jugador']}','','width=500,height=500,toolbar=NO'); return false;\">Editar</a>";                                                    
+            echo "<a href='../update/editar_jugador.php?id={$fila['username']}' class='btn btn-primary' onclick=\"window.open('../update/editar_jugador.php?id={$fila['username']}','','width=500,height=500,toolbar=NO'); return false;\">Editar</a>";                                                    
             echo "</td>";
             echo "</tr>";
         }

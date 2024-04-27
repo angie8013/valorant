@@ -7,7 +7,7 @@ require_once("../../db/conexion_2.php");
 $db = new Database();
 $con = $db->conectar();
 
-$sql = "SELECT j.id_jugador, j.correo, j.nombre, j.username, j.contrasena, r.rol, e.estado, j.ult_ini  
+$sql = "SELECT j.username, j.correo, j.nombre, j.username, j.contrasena, r.rol, e.estado, j.ult_ini  
         FROM jugador j
         INNER JOIN rol r ON j.id_rol = r.id_rol
         INNER JOIN estado e ON j.id_estado = e.id_estado
@@ -196,7 +196,7 @@ $result = $con->query($sql);
                                             <tbody>
                                                 <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)) : ?>
                                                     <tr>
-                                                        <td><?php echo $row['id_jugador']; ?></td>
+                                                        <td><?php echo $row['username']; ?></td>
                                                         <td><?php echo $row['correo']; ?></td>
                                                         <td><?php echo $row['nombre']; ?></td>
                                                         <td><?php echo $row['username']; ?></td>
@@ -204,7 +204,7 @@ $result = $con->query($sql);
                                                         <td><?php echo $row['ult_ini']; ?></td>
                                                         <td></td>
                                                         <td>
-                                                            <button type="button" class="btn btn-<?php echo ($row['estado'] === 'Activo') ? 'danger' : 'success'; ?> btn-activate" data-id="<?php echo $row['id_jugador']; ?>" data-current-state="<?php echo $row['estado']; ?>" onclick="return confirmAction(this);">
+                                                            <button type="button" class="btn btn-<?php echo ($row['estado'] === 'Activo') ? 'danger' : 'success'; ?> btn-activate" data-id="<?php echo $row['username']; ?>" data-current-state="<?php echo $row['estado']; ?>" onclick="return confirmAction(this);">
                                                                 <?php echo ($row['estado'] === 'Activo') ? 'Desactivar' : 'Activar'; ?>
                                                             </button>
 

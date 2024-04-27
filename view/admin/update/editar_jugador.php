@@ -1,14 +1,6 @@
     <?php
     session_start();
 
-    // Verificar si la sesión no está iniciada
-    if (!isset($_SESSION["id_jugador"])) {
-        // Mostrar un alert y redirigir utilizando JavaScript
-        echo '<script>alert("Debes iniciar sesión antes de acceder a la interfaz de administrador.");</script>';
-        echo '<script>window.location.href = "../../../index.php";</script>';
-        exit();
-    }
-
     require_once("../../../db/conection.php");
     $db = new Database();
     $con = $db->conectar();
@@ -16,7 +8,7 @@
     if (isset($_GET['id']) && !empty($_GET['id'])) {
         $id = $_GET['id'];
 
-        $sql = "SELECT * FROM jugador WHERE id_jugador = $id";
+        $sql = "SELECT * FROM jugador WHERE username = $id";
         $result = $con->query($sql);
         $jugador = $result->fetch(PDO::FETCH_ASSOC);
     } else {
@@ -26,7 +18,6 @@
     }
 
     if (isset($_POST["update"])) {
-        $id_jugador = $_POST['id_jugador'];
         $correo = $_POST['correo'];
         $nombre = $_POST['nombre'];
         $username = $_POST['username'];
@@ -34,15 +25,15 @@
         $id_estado = $_POST['id_estado'];
 
 
-        $updateSQL = $con->prepare("UPDATE jugador SET correo = ?, nombre = ?, username = ?, id_rol = ?, id_estado = ? WHERE id_jugador = ?");
-        $updateSQL->execute([$correo, $nombre, $username, $id_rol, $id_estado, $id_jugador]);
+        $updateSQL = $con->prepare("UPDATE jugador SET correo = ?, nombre = ?, username = ?, id_rol = ?, id_estado = ? WHERE username = '$username'");
+        $updateSQL->execute([$correo, $nombre, $username, $id_rol, $id_estado ]);
 
 
         echo '<script>alert("Actualización Exitosa");</script>';
         echo '<script>window.close();</script>';
     } elseif (isset($_POST["delete"])) {
-        $id_jugador = $_POST['id_jugador'];
-        echo "ID del jugador a eliminar: " . $id_jugador; // Depuración
+        $username = $_POST['username'];
+        echo "ID del jugador a eliminar: " . $username; // Depuración
     
         // Eliminar registros relacionados en la tabla detalle_batalla
         $deleteDetalleSQL = $con->prepare("DELETE FROM detalle_batalla WHERE id_jugador_atacante = ? OR id_jugador_atacado = ?");
@@ -55,8 +46,8 @@
         }
     
         // Eliminar el registro del jugador
-        $deleteJugadorSQL = $con->prepare("DELETE FROM jugador WHERE id_jugador = ?");
-        if ($deleteJugadorSQL->execute([$id_jugador])) {
+        $deleteJugadorSQL = $con->prepare("DELETE FROM jugador WHERE username = ?");
+        if ($deleteJugadorSQL->execute([$username])) {
             echo "Registro Eliminado Exitosamente"; // Depuración
             header('Location: ../tablas/jugador.php');
             exit;
@@ -83,12 +74,6 @@
         <div class="container">
             <h2 class="mt-5 mb-3">Actualizar datos del jugador</h2>
             <form autocomplete="off" name="frm_consulta" method="POST">
-                <div class="form-group row">
-                    <label for="id_jugador" class="col-sm-2 col-form-label">ID</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="id_jugador" name="id_jugador" value="<?php echo $jugador['id_jugador'] ?>" readonly>
-                    </div>
-                </div>
                 <div class="form-group row">
                     <label for="correo" class="col-sm-2 col-form-label">Correo</label>
                     <div class="col-sm-10">
