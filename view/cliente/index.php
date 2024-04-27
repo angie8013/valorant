@@ -1,132 +1,143 @@
 <?php
-session_start();
+require_once("../../db/conection.php");
 
-require_once("../../db/conexion_2.php");
 $db = new Database();
 $con = $db->conectar();
 
-function obtenerNombreJugador($username, $con)
-{
-    $sql = "SELECT nombre FROM jugador WHERE username = :username";
-    $stmt = $con->prepare($sql);
-    $stmt->bindParam(':username', $username);
-    $stmt->execute();
-    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $resultado ? $resultado['nombre'] : null;
+session_start();
+
+// Manejo del cierre de sesión
+if (isset($_POST['btncerrar'])) {
+    session_destroy();
+    header('Location: ../../index.php');
+    exit(); 
 }
 
-function obtenerNombreArma($id_arma, $con)
-{
-    $sql = "SELECT nombre FROM arma WHERE id_arma = :id";
-    $stmt = $con->prepare($sql);
-    $stmt->bindParam(':id', $id_arma);
-    $stmt->execute();
-    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $resultado ? $resultado['nombre'] : null;
+// Conexión y validación de sesión
+$db = new Database();
+$conexion = $db->conectar();
+
+// Verificar si el usuario está autenticado
+if (!isset($_SESSION['username'])) {
+    echo '<script>
+            alert("Por favor inicie sesión e intente nuevamente");
+            window.location = "../../index.php";
+          </script>';
+    session_destroy();
+    die();
+}
+try {
+    // Crear una instancia de la clase Database
+    $db = new Database();
+    // Establecer la conexión
+    $conexion = $db->conectar();
+
+    // Preparar y ejecutar la consulta
+    $consultaUsuario = $conexion->prepare("SELECT username FROM jugador WHERE username = :username");
+
+    $consultaUsuario->bindParam(':username', $_SESSION['username']);
+    $consultaUsuario->execute();
+    $usuario = $consultaUsuario->fetch(PDO::FETCH_ASSOC);
+
+    // Comprobar si se obtuvo el usuario correctamente
+    if (!$usuario) {
+        throw new Exception("El usuario no fue encontrado en la base de datos");
+    }
+
+    $nombreUsuario = $usuario['username'];
+} catch (PDOException $e) {
+    // Manejar errores de PDO
+    echo "Error de PDO: " . $e->getMessage();
+} catch (Exception $e) {
+    // Manejar otros tipos de errores
+    echo "Error: " . $e->getMessage();
 }
 
-function obtenerNombreAgente($id_agente, $con)
-{
-    $sql = "SELECT nombre FROM agente WHERE id_agente = :id";
-    $stmt = $con->prepare($sql);
-    $stmt->bindParam(':id', $id_agente);
-    $stmt->execute();
-    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $resultado ? $resultado['nombre'] : null;
-}
+$puntos = $conexion->prepare("SELECT jugador.puntos AS puntos_jugador, agente.*, jugador.*, puntos.* FROM jugador INNER JOIN puntos ON jugador.id_puntos = puntos.id_puntos INNER JOIN agente ON jugador.id_avatar = agente.id_agente WHERE jugador.username = :username");
+$puntos->bindParam(':username', $_SESSION['username']);
+$puntos->execute();
+$info = $puntos->fetch(PDO::FETCH_ASSOC);
 
-$sql = "SELECT * FROM detalle_batalla";
-$resultado = $con->query($sql);
+$foto = $info['agente'];
+$rango = $info['rango_img'];
+$puntos_jugador = $info['puntos_jugador']; // Aquí están los puntos del jugador de la tabla "jugador"
 
-$detalle_batalla = [];
+// Verificar si los puntos del jugador coinciden con los puntos en la tabla puntos
+if ($puntos_jugador != $info['puntos']) {
+    // Obtener el id_puntos correspondiente
+    $id_puntos_stmt = $conexion->prepare("SELECT id_puntos FROM puntos WHERE puntos = :puntos");
+    $id_puntos_stmt->bindParam(':puntos', $puntos_jugador);
+    $id_puntos_stmt->execute();
+    $id_puntos = $id_puntos_stmt->fetchColumn();
 
-if ($resultado === false) {
-    echo "Error al ejecutar la consulta SQL: " . $con->errorInfo()[2];
-} else {
-    if ($resultado->rowCount() > 0) {
-        while ($fila = $resultado->fetch(PDO::FETCH_ASSOC)) {
-            $detalle_batalla[] = $fila;
-        }
-    } else {
-        echo "No se encontraron resultados.";
+    if ($id_puntos) {
+        // Actualizar la columna id_puntos en la tabla jugador
+        $update_id_puntos_stmt = $conexion->prepare("UPDATE jugador SET id_puntos = :id_puntos WHERE username = :username");
+        $update_id_puntos_stmt->bindParam(':id_puntos', $id_puntos);
+        $update_id_puntos_stmt->bindParam(':username', $_SESSION['username']);
+        $update_id_puntos_stmt->execute();
     }
 }
+
+$conexion = null;
 ?>
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin</title>
-    <link href="../../css/bootstrap.css" rel="stylesheet" />
-    <link href="../../css/font-awesome.css" rel="stylesheet" />
-    <link href="../../js/morris/morris-0.4.3.min.css" rel="stylesheet" />
-    <link href="../../css/custom.css" rel="stylesheet" />
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORANT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="../../css/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
 </head>
-
 <body>
-    <div id="wrapper">
-        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
-            <!-- Navbar content -->
-        </nav>
-
-        <nav class="navbar-default navbar-side" role="navigation">
-            <!-- Sidebar content -->
-        </nav>
-
-        <div id="page-wrapper">
-            <div id="page-inner">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h2>Bienvenido admin</h2>
-                    </div>
-                </div>
-                <hr />
-                <div class="row">
-                    <div class="col-md-9 col-sm-12 col-xs-12">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <h4><strong>Detalle de partidas:</strong></h4>
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Jugador Atacante</th>
-                                                <th>Jugador Atacado</th>
-                                                <th>Sala</th>
-                                                <th>Arma</th>
-                                                <th>Agente</th>
-                                                <th>Vida</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            foreach ($detalle_batalla as $detalle) {
-                                                echo '<tr>
-                                                        <td>' . $detalle['id_detalle'] . '</td>
-                                                        <td>' . obtenerNombreJugador($detalle['id_jugador_atacante'], $con) . '</td>
-                                                        <td>' . obtenerNombreJugador($detalle['id_jugador_atacado'], $con) . '</td>
-                                                        <td>' . $detalle['id_sala'] . '</td>
-                                                        <td>' . obtenerNombreArma($detalle['id_arma'], $con) . '</td>
-                                                        <td>' . obtenerNombreAgente($detalle['id_agente'], $con) . '</td>
-                                                        <td>' . $detalle['puntos_vida'] . '</td>
-                                                    </tr>';
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <video src="../../img/lobby.mp4" autoplay="true" muted="true" loop="true" geter="../img/lobby.mp4"></video>
+    <div class="sidebar">
+        <div class="top-section">
+            <div class="logo">
+            <?php echo "<img src='data:image/jpeg; base64," . base64_encode($foto) . "'>"; ?>
+                <h1 class="logo-text">
+                <?php echo $usuario['username'] ?>
+                </h1>               
+            </div>
+            <div class="sidebar-toggle-btn">
+                <i class="fas fa-angles-right"></i>
             </div>
         </div>
+
+        <div class="sidebar-menu">
+            <div class="top-menu">
+             <a href="mapa.php" class="sidebar-link">
+                <i class='bx bxs-joystick' ></i>
+                    <span>Jugar</span>
+             </a>
+          
+             <a href="avatar.php" class="sidebar-link">
+                <i class='bx bxs-bot'></i>
+                <span>Agentes</span>
+             </a> 
+             <a href="" class="sidebar-link">
+             <i class='bx bx-line-chart'></i>
+                <span>Estadisticas</span>
+             </a>
+           
+            </div>
+
+            <form action="" method="post" class="sidebar-link">
+        <button type="submit" name="btncerrar" class="btn-cerrar">
+            <i class="fas fa-arrow-right-from-bracket"></i>
+            <span>Cerrar Sesión</span>
+        </button>
+    </form>
+
+          </div>
+        
+        </div>
+    
     </div>
     <div class="puntos">
     <div class="puntos_v">
@@ -160,5 +171,4 @@ if ($resultado === false) {
 
     </script>
 </body>
-
 </html>
