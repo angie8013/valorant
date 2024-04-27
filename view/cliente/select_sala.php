@@ -41,7 +41,7 @@ if (isset($_POST['elegir_sala']) && isset($_POST['id_sala'])) {
 
         // Obtener el id_detalle recién insertado
         $id_detalle = $con->lastInsertId();
-
+        $id_sala = $_POST["id_sala"];
         // Cerrar la conexión
         $con = null;
 
