@@ -111,7 +111,7 @@ $conexion = null;
 
         <div class="sidebar-menu">
             <div class="top-menu">
-             <a href="sala.php" class="sidebar-link">
+             <a href="mapa.php" class="sidebar-link">
                 <i class='bx bxs-joystick' ></i>
                     <span>Jugar</span>
              </a>
@@ -148,7 +148,7 @@ $conexion = null;
 
     <div class="puntos_v">
         <h1>Nivel:
-        <?php echo $info['id_puntos']; ?>
+        <?php echo $info['nivel']; ?>
         </h1>
     </div>
     <div class="puntos_v">
