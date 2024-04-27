@@ -25,13 +25,6 @@ if(isset($_GET['id_detalle'])) {
         $stmt_jugadores->bindParam(':id_detalle', $id_detalle);
         $stmt_jugadores->bindParam(':username', $username);
         $stmt_jugadores->execute();
-
-        // Generar el elemento select HTML con los jugadores atacantes
-        echo '<select name="jugadores_atacantes">';
-        while ($row = $stmt_jugadores->fetch(PDO::FETCH_ASSOC)) {
-            echo '<option value="' . $row['id_jugador_atacante'] . '">' . $row['id_jugador_atacante'] . '</option>';
-        }
-        echo '</select>';
     } catch(PDOException $e) {
         // Si hay algún error, redireccionar a la página de error con un mensaje específico
         $error_message = $e->getMessage();
@@ -44,3 +37,26 @@ if(isset($_GET['id_detalle'])) {
     exit();
 }
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seleccionar Jugador Atacante</title>
+</head>
+<body>
+
+<form action="enemigo_up.php" method="POST">
+    <label for="jugadores_atacantes">Seleccionar Jugador Atacante:</label>
+    <select name="jugador_atacante" id="jugadores_atacantes">
+        <?php
+        while ($row = $stmt_jugadores->fetch(PDO::FETCH_ASSOC)) {
+            echo '<option value="' . $row['id_jugador_atacante'] . '">' . $row['id_jugador_atacante'] . '</option>';
+        }
+        ?>
+    </select>
+    <input type="hidden" name="id_detalle" value="<?php echo $id_detalle; ?>">
+    <input type="submit" value="Actualizar Detalle Batalla">
+</form>
+
+</body>
+</html>
