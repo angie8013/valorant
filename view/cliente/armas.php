@@ -16,26 +16,25 @@ if (!isset($_SESSION['username'])) {
 
 // Obtener el nivel del jugador
 $username = $_SESSION['username'];
-$stmt = $con->prepare("SELECT id_puntos FROM jugador WHERE username = :username");
+$stmt = $con->prepare("SELECT jugador.id_puntos, puntos.nivel 
+                      FROM jugador 
+                      INNER JOIN puntos ON jugador.id_puntos = puntos.id_puntos
+                      WHERE jugador.username = :username");
 $stmt->bindParam(':username', $username);
 $stmt->execute();
 $jugador = $stmt->fetch(PDO::FETCH_ASSOC);
-$nivel_jugador = $jugador['id_puntos'];
+$nivel_jugador = $jugador['nivel'];
 
 // Consulta para obtener las armas del mismo nivel que el jugador
-$puntos = $con->prepare("SELECT * FROM arma WHERE nivel <= :nivel_jugador");
+$puntos = $con->prepare("SELECT * FROM arma WHERE nivel = :nivel_jugador");
 $puntos->bindParam(':nivel_jugador', $nivel_jugador);
 $puntos->execute();
 
 // Consulta para obtener los id_detalle de la tabla detalle_batalla
-
 $punto = $con->prepare("SELECT * FROM detalle_batalla WHERE id_sala = :username");
 $punto->bindParam(':username', $username);
 $punto->execute();
-
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -84,28 +83,6 @@ $punto->execute();
             }
             ?>
         </div>
-        <form method="post" action="tu_script.php">
-    <!-- Otros elementos del formulario aquí -->
-
-    <!-- Select dentro del formulario -->
-    <select name='usuarios'>
-        <?php
-        try {
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $id_jugador_atacante = $row['id_jugador_atacante'];
-                echo "<option value='$id_jugador_atacante'>$id_jugador_atacante</option>";
-            }
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
-        ?>
-    </select>
-
-    <!-- Otros elementos del formulario aquí -->
-
-    <!-- Botón de enviar -->
-    <button type="submit">Enviar</button>
-</form>
     </div>
 </body>
 

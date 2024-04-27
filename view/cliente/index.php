@@ -148,7 +148,7 @@ $conexion = null;
 
     <div class="puntos_v">
         <h1>Nivel:
-        <?php echo $info['id_puntos']; ?>
+        <?php echo $info['nivel']; ?>
         </h1>
     </div>
     <div class="puntos_v">
