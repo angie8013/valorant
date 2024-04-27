@@ -14,18 +14,21 @@ if (!isset($_SESSION['username'])) {
     die();
 }
 
+
+
 // Verificar si se recibió el id_detalle a través de la URL
-if(isset($_GET['id_detalle'])) {
+if (isset($_GET['id_detalle'])) {
     $id_detalle = $_GET['id_detalle'];
     $username = $_SESSION['username'];
 
+
     try {
-        // Obtener los jugadores atacantes con el mismo id_sala excluyendo al usuario que inició sesión
+        // Consulta SQL para obtener los jugadores con el mismo id_sala
         $stmt_jugadores = $con->prepare("SELECT DISTINCT id_jugador_atacante FROM detalle_batalla WHERE id_sala = (SELECT id_sala FROM detalle_batalla WHERE id_detalle = :id_detalle) AND id_jugador_atacante <> :username");
         $stmt_jugadores->bindParam(':id_detalle', $id_detalle);
         $stmt_jugadores->bindParam(':username', $username);
         $stmt_jugadores->execute();
-    } catch(PDOException $e) {
+    } catch (PDOException $e) {
         // Si hay algún error, redireccionar a la página de error con un mensaje específico
         $error_message = $e->getMessage();
         header("Location: pagina_de_error.php?error_message=$error_message");
@@ -38,25 +41,51 @@ if(isset($_GET['id_detalle'])) {
 }
 ?>
 
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Seleccionar Jugador Atacante</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Select Personalizado</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../../css/estilos.css">
 </head>
+
 <body>
 
-<form action="enemigo_up.php" method="POST">
-    <label for="jugadores_atacantes">Seleccionar Jugador Atacante:</label>
-    <select name="jugador_atacante" id="jugadores_atacantes">
-        <?php
-        while ($row = $stmt_jugadores->fetch(PDO::FETCH_ASSOC)) {
-            echo '<option value="' . $row['id_jugador_atacante'] . '">' . $row['id_jugador_atacante'] . '</option>';
-        }
-        ?>
-    </select>
-    <input type="hidden" name="id_detalle" value="<?php echo $id_detalle; ?>">
-    <input type="submit" value="Actualizar Detalle Batalla">
-</form>
+    <div class="contenedor">
+        <form action="">
+            <div class="selectbox">
+                <select class="select" id="select">
+                    <div class="contenido-select">
+                        
+                    </div>
+                    <i class="fas fa-angle-down"></i>
+                </select>
 
+
+            </div>
+            <div class="opciones" id="opciones">
+            <div class="contenido-opcion">
+                <img src="img/mexico.png" alt="">
+                <div class="textos">
+                <?php
+                        while ($row = $stmt_jugadores->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id_jugador_atacante'] . '">' . $row['id_jugador_atacante'] . '</option>';
+                        }
+                        ?>
+                </div>
+            </div>
+            </div>
+        </form>
+    </div>
+    
+
+    <script src="../../js/main_2.js"></script>
 </body>
+
 </html>
