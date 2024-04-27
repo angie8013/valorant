@@ -27,7 +27,7 @@ if (isset($_POST['jugador_atacante']) && isset($_POST['id_detalle'])) {
         $stmt_actualizar->execute();
 
         // Redireccionar a alguna página de éxito o a donde sea necesario
-        header("Location: pagina_de_exito.php");
+        header("Location: armas.php?id_detalle=$id_detalle");
         exit();
     } catch(PDOException $e) {
         // Si hay algún error, redireccionar a la página de error con un mensaje específico

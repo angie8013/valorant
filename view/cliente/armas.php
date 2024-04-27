@@ -64,7 +64,7 @@ $punto->execute();
                         <div class="card__data">
                             <div class="card__description">
                                 <h2 class="card-title"><?php echo $info['nombre']; ?></h2>
-                                <strong class="card-text">Daño: <?php echo $info['daño']; ?></strong> <br>
+                                <strong class="card-text">Daño: <?php echo $info['dano']; ?></strong> <br>
                                 <strong class="card-text">Balas: <?php echo $info['balas']; ?></strong><br>
                                 <strong class="card-text">Nivel: <?php echo $info['nivel']; ?></strong>
                                 <!-- Agrega más información de ser necesario -->
