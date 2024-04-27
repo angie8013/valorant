@@ -75,9 +75,6 @@ if (!$result) {
                         <a href="../jug_inac.php"><i class='bx bxs-user-x fa-3x'></i>Jugadores Inactivos</a>
                     </li>
                     <li>
-                        <a href="../salas.php"><i class='bx bx-cube-alt fa-3x'></i> Salas</a>
-                    </li>
-                    <li>
                         <a class="active-menu" href="#"><i class='bx bx-sitemap fa-3x'></i> Tablas<span class='bx bx-chevron-down'></span></a>
                         <ul class="nav nav-second-level">
                             <li>

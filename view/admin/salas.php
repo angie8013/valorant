@@ -1,15 +1,48 @@
 ﻿<?php
-//conectar bd
+// Conectar a la base de datos
 require_once("../../db/conection.php");
 $db = new Database();
 $con = $db->conectar();
 
-// Consulta SQL para obtener todos los datos de la tabla jugador
-$sql = "SELECT * FROM jugador";
+// Function to obtain the name of a player by their username
+function obtenerNombreJugador($username, $conexion) {
+    $sql = "SELECT nombre FROM jugador WHERE username = :username";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($result) {
+        return $result['nombre']; // Suponiendo que el nombre del jugador está en una columna llamada 'nombre'
+    } else {
+        return "Nombre no encontrado"; // O cualquier valor por defecto
+    }
+}
+
+// Function to obtain the name of a weapon by its ID
+function obtenerNombreArma($arma_id, $conexion) {
+    $sql = "SELECT nombre FROM arma WHERE id = :arma_id";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bindParam(':arma_id', $arma_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($result) {
+        return $result['nombre'];
+    } else {
+        return "Nombre de arma no encontrado";
+    }
+}
+
+// Query to retrieve data from the detalle_batalla table
+$sql = "SELECT * FROM detalle_batalla";
 $resultado = $con->query($sql);
 
-
-
+// Check if the query was successful and fetch data into an associative array
+if ($resultado && $resultado->rowCount() > 0) {
+    $detalle_batalla = $resultado->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    // Handle the case where no data is fetched
+    $detalle_batalla = array();
+}
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +113,7 @@ $resultado = $con->query($sql);
                     <li>
                         <a href="#"><i class='bx bx-sitemap fa-3x'></i> Tablas<span class='bx bx-chevron-down'></span></a>
                         <ul class="nav nav-second-level">
-                        <li>
+                            <li>
                                 <a href="./tablas/jugador.php">Jugadores</a>
                             </li>
                             <li>
@@ -112,7 +145,7 @@ $resultado = $con->query($sql);
                     <li>
                         <a href="#"><i class='bx bx-sitemap fa-3x'></i> Formularios<span class='bx bx-chevron-down'></span></a>
                         <ul class="nav nav-second-level">
-                        <li>
+                            <li>
                                 <a href="./forms/jugador.php">Jugadores</a>
                             </li>
                             <li>
@@ -160,7 +193,6 @@ $resultado = $con->query($sql);
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="table-responsive">
-                                <div class="table-responsive">
                                     <table class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
@@ -175,22 +207,27 @@ $resultado = $con->query($sql);
                                         </thead>
                                         <tbody>
                                             <?php
-                                            // Iterar sobre los datos de detalle_batalla y mostrar cada fila en la tabla
-                                            foreach ($detalle_batalla as $detalle) {
-                                                echo '<tr>
-                                                        <td>' . $detalle['id_detalle'] . '</td>
-                                                        <td>' . obtenerNombreJugador($detalle['id_jugador_atacante'], $con) . '</td>
-                                                        <td>' . obtenerNombreJugador($detalle['id_jugador_atacado'], $con) . '</td>
-                                                        <td>' . $detalle['id_sala'] . '</td>
-                                                        <td>' . obtenerNombreArma($detalle['id_arma'], $con) . '</td>
-                                                        <td>' . obtenerNombreAgente($detalle['id_agente'], $con) . '</td>
-                                                        <td>' . $detalle['puntos_vida'] . '</td>
-                                                    </tr>';
+                                            // Verificar si $detalle_batalla tiene elementos antes de iterar sobre ellos
+                                            if (!empty($detalle_batalla)) {
+                                                foreach ($detalle_batalla as $detalle) {
+                                                    // Procesar cada $detalle
+                                                    echo '<tr>
+                                                            <td>' . $detalle['id_detalle'] . '</td>
+                                                            <td>' . obtenerNombreJugador($detalle['id_jugador_atacante'], $con) . '</td>
+                                                            <td>' . obtenerNombreJugador($detalle['id_jugador_atacado'], $con) . '</td>
+                                                            <td>' . $detalle['id_sala'] . '</td>
+                                                            <td>' . obtenerNombreArma($detalle['id_arma'], $con) . '</td>
+                                                            <td>' . obtenerNombreAgente($detalle['id_agente'], $con) . '</td>
+                                                            <td>' . $detalle['puntos_vida'] . '</td>
+                                                        </tr>';
+                                                }
+                                            } else {
+                                                // En caso de que $detalle_batalla esté vacío, mostrar un mensaje o realizar otra acción
+                                                echo "<tr><td colspan='7'>No hay datos disponibles</td></tr>";
                                             }
                                             ?>
                                         </tbody>
                                     </table>
-                                </div>
                                 </div>
                             </div>
                         </div>
