@@ -33,10 +33,17 @@ if (isset($_POST['elegir_sala']) && isset($_POST['id_sala'])) {
         $id_mundo = $stmt_id_mundo->fetchColumn();
 
         // Insertar el nuevo registro en la tabla "detalle_batalla"
-        $stmt_detalle = $con->prepare("INSERT INTO detalle_batalla (id_sala, id_mundo, id_jugador_atacante) VALUES (:id_sala, :id_mundo, :username)");
+        $stmt_id_avatar = $con->prepare("SELECT id_avatar FROM jugador WHERE username = :username");
+        $stmt_id_avatar->bindParam(':username', $username);
+        $stmt_id_avatar->execute();
+        $id_avatar = $stmt_id_avatar->fetchColumn();
+
+        // Insertar el nuevo registro en la tabla "detalle_batalla"
+        $stmt_detalle = $con->prepare("INSERT INTO detalle_batalla (id_sala, id_mundo, id_jugador_atacante, id_agente) VALUES (:id_sala, :id_mundo, :username, :id_avatar)");
         $stmt_detalle->bindParam(':id_sala', $id_sala);
         $stmt_detalle->bindParam(':id_mundo', $id_mundo);
         $stmt_detalle->bindParam(':username', $username);
+        $stmt_detalle->bindParam(':id_avatar', $id_avatar);
         $stmt_detalle->execute();
 
         // Obtener el id_detalle recién insertado

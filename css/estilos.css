@@ -42,7 +42,7 @@ h1{
     color: #F24162;
     margin-bottom: 0px;
    }
-a {
+a, button {
 	text-decoration: none;
 }
 
@@ -149,17 +149,37 @@ a {
 	border-style: none;
 }
 
-.opciones .contenido-opcion {
+button.boton {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    transition: .2s ease all;
+    display: block;
+    background: #F24162;
+    border-style: none;
+}
+
+
+
+button.boton {
 	padding: 30px;
 }
+
 
 .contenido-opcion img {
 	width: 60px;
 	height: 60px;
 	margin-right: 30px;
 }
-
+button.boton img {
+	width: 60px;
+	height: 60px;
+	margin-right: 30px;
+}
 .opciones .contenido-opcion:hover {
+	background: var(--card-color);
+}
+button.boton:hover {
 	background: var(--card-color);
 }
 

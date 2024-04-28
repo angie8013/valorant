@@ -25,6 +25,12 @@ if (isset($_GET['id_detalle'])) {
         $stmt_jugadores->bindParam(':id_detalle', $id_detalle);
         $stmt_jugadores->bindParam(':username', $username);
         $stmt_jugadores->execute();
+
+        // Consulta SQL para obtener los agentes
+        $stmt_agentes = $con->prepare("SELECT detalle_batalla.id_agente, agente.agente
+                                       FROM detalle_batalla
+                                       JOIN agente ON detalle_batalla.id_agente = agente.id_agente");
+        $stmt_agentes->execute();
     } catch (PDOException $e) {
         // Si hay algún error, redireccionar a la página de error con un mensaje específico
         $error_message = $e->getMessage();
@@ -61,21 +67,27 @@ if (isset($_GET['id_detalle'])) {
                 </div>
                 
                 <div class="opciones" id="opciones">
-                    
-                        <?php
-                        // Iterar sobre los datos obtenidos de la base de datos para generar opciones
-                        while ($row = $stmt_jugadores->fetch(PDO::FETCH_ASSOC)) {
-                            ?>
-                            <button class="contenido-opcion" type="submit" name="jugador_atacante" value="<?php echo $row['id_jugador_atacante']; ?>">
-                                <div class="opcion">
-                                    <h1 class="titulo"><?php echo $row['id_jugador_atacante']; ?></h1>
-                                </div>
-                            </button>
-                        <?php
-                        }
+                    <?php
+                    // Obtener la información de los agentes
+                    while ($info_agente = $stmt_agentes->fetch(PDO::FETCH_ASSOC)) {
                         ?>
-                    </div>
-                
+                        <div class="contenido-opcion">
+                            <?php
+                            // Iterar sobre los datos obtenidos de la base de datos para generar opciones
+                            while ($row = $stmt_jugadores->fetch(PDO::FETCH_ASSOC)) {
+                                ?>
+                                <button class="boton" type="submit" name="jugador_atacante" value="<?php echo $row['id_jugador_atacante']; ?>">
+                                    <?php echo "<img src='data:image/jpeg;base64," . base64_encode($info_agente['agente']) . "'>"; ?>
+                                    <h1 class="titulo"><?php echo $row['id_jugador_atacante']; ?></h1>
+                                </button>
+                                <?php
+                            }
+                            ?>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                </div>
             </div>
             <input type="hidden" name="id_detalle" value="<?php echo $id_detalle; ?>">
         </form>

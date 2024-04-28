@@ -15,11 +15,11 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Verificar si se recibió el valor del arma seleccionada enviado desde el formulario
-if(isset($_POST['valor'])) {
+if (isset($_POST['valor'])) {
     $id_arma = $_POST["valor"];
     $username = $_SESSION['username'];
     // Obtener el id_detalle pasado en la URL
-    if(isset($_GET['id_detalle'])) {
+    if (isset($_GET['id_detalle'])) {
         $id_detalle = $_GET['id_detalle'];
 
         try {
@@ -29,11 +29,16 @@ if(isset($_POST['valor'])) {
             $stmt_actualizar_arma->bindParam(':id_detalle', $id_detalle);
             $stmt_actualizar_arma->execute();
 
+            $stmt_info_jugador = $con->prepare("SELECT id_jugador_atacado FROM detalle_batalla WHERE id_detalle = :id_detalle");
+            $stmt_info_jugador->bindParam(':id_detalle', $id_detalle);
+            $stmt_info_jugador->execute();
+            $info_jugador = $stmt_info_jugador->fetch(PDO::FETCH_ASSOC);
+
             // Obtener el valor de 'dano' del arma seleccionado
-            $stmt_dano_arma = $con->prepare("SELECT dano FROM arma WHERE id_arma = :id_arma");
-            $stmt_dano_arma->bindParam(':id_arma', $id_arma);
-            $stmt_dano_arma->execute();
-            $dano_arma = $stmt_dano_arma->fetchColumn();
+            $stmt_info_arma = $con->prepare("SELECT dano FROM arma WHERE id_arma = :id_arma");
+            $stmt_info_arma->bindParam(':id_arma', $id_arma);
+            $stmt_info_arma->execute();
+            $info_arma = $stmt_info_arma->fetch(PDO::FETCH_ASSOC);
 
             // Obtener el id_jugador_atacado
             $stmt_jugador_atacado = $con->prepare("SELECT id_jugador_atacado FROM detalle_batalla WHERE id_detalle = :id_detalle");
@@ -42,21 +47,13 @@ if(isset($_POST['valor'])) {
             $id_jugador_atacado = $stmt_jugador_atacado->fetchColumn();
 
             // Obtener la vida actual del jugador atacado
-            $stmt_vida_jugador_atacado = $con->prepare("SELECT puntos_vida FROM detalle_batalla WHERE id_jugador_atacado = :id_jugador_atacado AND id_detalle = :id_detalle");
-            $stmt_vida_jugador_atacado->bindParam(':id_jugador_atacado', $id_jugador_atacado);
-            $stmt_vida_jugador_atacado->bindParam(':id_detalle', $id_detalle);
-            $stmt_vida_jugador_atacado->execute();
-            $vida_jugador_atacado = $stmt_vida_jugador_atacado->fetchColumn();
+            $id_jugador_atacado = $info_jugador['id_jugador_atacado'];
+            $dano_arma = $info_arma['dano'];
 
-            // Calcular la nueva vida del jugador atacado después del ataque
-            $nueva_vida_jugador_atacado = $vida_jugador_atacado - $dano_arma;
-
-            // Actualizar la vida del jugador atacado en la tabla 'detalle_batalla'
-            $stmt_actualizar_vida = $con->prepare("UPDATE detalle_batalla SET puntos_vida = :nueva_vida_jugador_atacado WHERE id_jugador_atacado = :id_jugador_atacado AND id_detalle = :id_detalle");
-            $stmt_actualizar_vida->bindParam(':nueva_vida_jugador_atacado', $nueva_vida_jugador_atacado);
-            $stmt_actualizar_vida->bindParam(':id_jugador_atacado', $id_jugador_atacado);
-            $stmt_actualizar_vida->bindParam(':id_detalle', $id_detalle);
-            $stmt_actualizar_vida->execute();
+            $stmt_restar_vida = $con->prepare("UPDATE detalle_batalla SET puntos_vida = puntos_vida - :dano_arma WHERE id_jugador_atacante = :id_jugador_atacado");
+            $stmt_restar_vida->bindParam(':dano_arma', $dano_arma);
+            $stmt_restar_vida->bindParam(':id_jugador_atacado', $id_jugador_atacado);
+            $stmt_restar_vida->execute();
 
             // Mostrar mensaje de alerta
             echo '<script>
@@ -64,7 +61,7 @@ if(isset($_POST['valor'])) {
                     window.location = "armas.php?id_detalle=' . $id_detalle . '";
                   </script>';
             exit(); // Asegurarse de salir del script después de la redirección
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             // Si hay algún error, redireccionar a una página de error y mostrar el mensaje de error
             $error_message = $e->getMessage();
             header("Location: pagina_de_error.php?error_message=$error_message");
@@ -80,4 +77,3 @@ if(isset($_POST['valor'])) {
     header("Location: pagina_de_error.php");
     exit();
 }
-?>
