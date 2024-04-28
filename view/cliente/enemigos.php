@@ -61,7 +61,7 @@ if (isset($_GET['id_detalle'])) {
                 </div>
                 
                 <div class="opciones" id="opciones">
-                    <div class="contenido-opcion">
+                    
                         <?php
                         // Iterar sobre los datos obtenidos de la base de datos para generar opciones
                         while ($row = $stmt_jugadores->fetch(PDO::FETCH_ASSOC)) {
@@ -75,7 +75,7 @@ if (isset($_GET['id_detalle'])) {
                         }
                         ?>
                     </div>
-                </div>
+                
             </div>
             <input type="hidden" name="id_detalle" value="<?php echo $id_detalle; ?>">
         </form>

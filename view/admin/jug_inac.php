@@ -7,13 +7,16 @@ require_once("../../db/conection.php");
 $db = new Database();
 $con = $db->conectar();
 
-$sql = "SELECT  j.correo, j.nombre, j.username, j.contrasena, r.rol, e.estado, j.ult_ini  
+$sql = "SELECT j.correo, j.nombre, j.username, j.contrasena, r.rol, e.estado, e.id_estado, j.ult_ini  
         FROM jugador j
         INNER JOIN rol r ON j.id_rol = r.id_rol
         INNER JOIN estado e ON j.id_estado = e.id_estado
         WHERE j.id_rol = 2";
 
 $result = $con->query($sql);
+
+$busqueda = "SELECT id_estado FROM jugador";
+$estado = $con->query($busqueda);
 
 ?>
 
@@ -95,11 +98,11 @@ $result = $con->query($sql);
                     <li>
                         <a class="active-menu" href="jug_inac.php"><i class='bx bxs-user-x fa-3x'></i>Jugadores Inactivos</a>
                     </li>
-                
+
                     <li>
                         <a href="#"><i class='bx bx-sitemap fa-3x'></i> Tablas<span class='bx bx-chevron-down'></span></a>
                         <ul class="nav nav-second-level">
-                        <li>
+                            <li>
                                 <a href="./tablas/jugador.php">Jugadores</a>
                             </li>
                             <li>
@@ -131,7 +134,7 @@ $result = $con->query($sql);
                     <li>
                         <a href="#"><i class='bx bx-sitemap fa-3x'></i> Formularios<span class='bx bx-chevron-down'></span></a>
                         <ul class="nav nav-second-level">
-                        <li>
+                            <li>
                                 <a href="./forms/jugador.php">Jugadores</a>
                             </li>
                             <li>
@@ -167,14 +170,14 @@ $result = $con->query($sql);
                 <div class="row">
                     <div class="col-md-12">
                         <h2><strong>JUGADORES</strong></h2>
-                       
+
                     </div>
                 </div>
                 <hr />
                 <!-- /. ROW  -->
                 <div class="row">
                     <div class="col-md-9 col-sm-12 col-xs-12">
-                    <h4><strong>Recuerde activar nuevos jugadores</strong></h4>
+                        <h4><strong>Recuerde activar nuevos jugadores</strong></h4>
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="table-container">
@@ -201,9 +204,21 @@ $result = $con->query($sql);
                                                         <td><?php echo $row['estado']; ?></td>
                                                         <td><?php echo $row['ult_ini']; ?></td>
                                                         <td>
-                                                            <button type="button" class="btn btn-<?php echo ($row['estado'] === 'Activo') ? 'danger' : 'success'; ?> btn-activate" data-id="<?php echo $row['username']; ?>" data-current-state="<?php echo $row['estado']; ?>" onclick="return confirmAction(this);">
-                                                                <?php echo ($row['estado'] === 'Activo') ? 'Desactivar' : 'Activar'; ?>
-                                                            </button>
+                                                            <form action="activacion_c.php" method="get">
+                                                                <input type="hidden" name="username" value="<?php echo htmlspecialchars($row['username']); ?>">
+                                                                <?php if ($row['id_estado'] == 1) : ?>
+                                                                    <button type="submit" class="btn btn-danger btn-activate">
+                                                                        Desactivar
+                                                                    </button>
+                                                                <?php else : ?>
+                                                                    <button type="submit" class="btn btn-success btn-activate" onclick="return confirm('¿Estás seguro de que quieres activar este usuario?');">
+                                                                        Activar
+                                                                    </button>
+                                                                <?php endif; ?>
+                                                            </form>
+
+
+
 
                                                         </td>
 
@@ -262,8 +277,6 @@ $result = $con->query($sql);
                     xhr.send('userId=' + userId + '&currentState=' + currentState);
                 });
             });
-
-            
         </script>
 
 </body>

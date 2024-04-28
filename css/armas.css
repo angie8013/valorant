@@ -69,7 +69,7 @@ img {
   display: block;
   justify-content: center;
   align-items: center;
-  min-height: 90vh;
+  min-height: 85vh;
   background: url(../img/fondo.jpg) no-repeat;
   background-size: cover;
   background-position: center;
@@ -78,7 +78,10 @@ img {
 
 .card__container {
   display: grid;
-  row-gap: 3.5rem;
+  row-gap: 2.5rem;
+  margin: 5%;
+  margin-top: 20px;
+  margin-bottom: 0px;
 }
 
 .card__article {
@@ -206,7 +209,7 @@ img {
 @media screen and (min-width: 768px) {
   .card__container {
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 1.5rem;
+    column-gap: 10%;
   }
 }
 
@@ -217,7 +220,172 @@ img {
   }
 
   .card__container {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .card__img {
+    width: 348px;
+  }
+  .card__data {
+    width: 316px;
+    padding-inline: 2.5rem;
+  }
+}
+
+
+.valorant-btn {
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 0;
+  margin: 10px 10px;
+  display: inline-block;
+  padding: 0;
+  position: relative;
+  color: #fff;
+  font-weight: 600;
+  background: none;
+  height: 45px;
+}
+.valorant-btn:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100%;
+  padding: 10px;
+  box-sizing: content-box;
+  border: 1px solid #222;
+  border-bottom: none;
+  height: 20%;
+  transform: translateY(-10px) translateX(-50%);
+  transition: all .4s;
+  display: block;
+}
+.valorant-btn:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  padding: 10px;
+  box-sizing: content-box;
+  border: 1px solid #222;
+  border-top: none;
+  height: 20%;
+  transform: translateY(10px) translateX(-50%);
+  transition: all .4s;
+  display: block;
+}
+.valorant-btn .underlay {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 3px;
+  box-sizing: border-box;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  overflow: hidden;
+}
+.valorant-btn .underlay:before {
+  content: "";
+  display: block;
+  width: 150%;
+  height: 400%;
+  background: #222;
+  padding: 0;
+  box-sizing: border-box; 
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 20;
+  transition: all .4s linear;
+  transform: translateX(-110%)  translateY(-50%) rotate(15deg);
+  z-index: 10;
+}
+.valorant-btn .underlay:after {
+  content: "";
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  box-shadow: 2px -2px 0 2px #FF4654, -2px 3px 0 2px #FF4655;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform: translate(3px, 3px);
+  background: #FF4655;
+}
+.valorant-btn .label {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 12px 90px;
+  box-sizing: border-box; 
+  position: relative;
+  z-index: 20;
+  font-size: 16px;
+  line-height: 1;
+}
+.valorant-btn .label:after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 5px;
+  box-sizing: border-box; 
+  position: absolute;
+  z-index: 30;
+  background: #222;
+  right: -3px;
+  bottom: -3px;
+  transition: all .4s 0s;
+}
+.valorant-btn:hover {
+  cursor: pointer;
+}
+.valorant-btn:hover .underlay:before {
+  transform: translateX(-10%)  translateY(-50%) rotate(15deg);
+}
+.valorant-btn:hover .label:after {
+  background: #fff;
+  transition: all .4s .4s;
+}
+.valorant-btn:active:before {
+  transform: translateY(-5px) translateX(-50%);
+  padding: 10px 5px;
+}
+.valorant-btn:active:after {
+  transform: translateY(5px) translateX(-50%);
+  padding: 10px 5px;
+}
+/*=============== BREAKPOINTS ===============*/
+/* For small devices */
+@media screen and (max-width: 340px) {
+  .container {
+    margin-inline: 1rem;
+  }
+
+  .card__data {
+    width: 250px;
+    padding: 1rem;
+  }
+}
+
+/* For medium devices */
+@media screen and (min-width: 768px) {
+  .card__container {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1.5rem;
+  }
+}
+
+/* For large devices */
+@media screen and (min-width: 1120px) {
+  .container {
+    height: 80vh;
+  }
+
+  .card__container {
+    grid-template-columns: repeat(2, 1fr);
   }
   .card__img {
     width: 348px;

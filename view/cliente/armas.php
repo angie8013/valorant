@@ -43,6 +43,8 @@ $punto->execute();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../css/armas.css">
+        <link rel="stylesheet" href="../../css/armas.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
@@ -82,8 +84,30 @@ $punto->execute();
                 echo "No hay armas registradas.";
             }
             ?>
+
+
         </div>
+
     </div>
+    <center>
+        <button class="valorant-btn" id="redireccionarBtn">
+            <span class="underlay">
+                <span class="label">Seleccionar oponente</span>
+            </span>
+        </button>
+    </center>
+
+    <script>
+        // Función para redireccionar al mismo id_detalle
+        document.getElementById("redireccionarBtn").addEventListener("click", function() {
+            // Obtener el id_detalle de la URL actual
+            var urlParams = new URLSearchParams(window.location.search);
+            var id_detalle = urlParams.get('id_detalle');
+
+            // Redireccionar a enemigos.php con el mismo id_detalle
+            window.location.href = "enemigos.php?id_detalle=" + id_detalle;
+        });
+    </script>
 </body>
 
 </html>
