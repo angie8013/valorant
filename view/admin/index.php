@@ -1,7 +1,5 @@
 ﻿<?php
 
-
-
 require_once("../../db/conection.php");
 $db = new Database();
 $con = $db->conectar();

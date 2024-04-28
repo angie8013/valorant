@@ -180,7 +180,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <form method="POST">
                                     <div class="form-group">
                                         <label for="rol">Rol:</label>
-                                        <input type="text" class="form-control" id="rol" name="rol" required>
+                                        <input type="text" class="form-control" id="rol" name="rol"  pattern="[A-Za-z]+" title="Solo se permiten letras"required>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Guardar Rol</button>
                                 </form>

@@ -2,13 +2,7 @@
 // Verificar si se ha iniciado la sesión
 session_start();
 
-// Verificar si la sesión no está iniciada
-if (!isset($_SESSION["id_jugador"])) {
-    // Mostrar un alert y redirigir utilizando JavaScript
-    echo '<script>alert("Debes iniciar sesión antes de acceder a la interfaz de administrador.");</script>';
-    echo '<script>window.location.href = "../../../index.php";</script>';
-    exit();
-}
+
 
 // Incluir el archivo de conexión a la base de datos
 require_once("../../../db/conection.php");
@@ -89,7 +83,7 @@ if (isset($_POST["update"])) {
 <body>
     <div class="container">
         <h2 class="mt-5 mb-3">Actualizar datos del mundo</h2>
-        <form autocomplete="off" name="frm_consulta" method="POST" enctype="multipart/form-data" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este mundo?');">
+        <form autocomplete="off" name="frm_consulta" method="POST" enctype="multipart/form-data">
             <div class="form-group row">
                 <label for="id_mundo" class="col-sm-2 col-form-label">ID</label>
                 <div class="col-sm-10">
@@ -110,12 +104,21 @@ if (isset($_POST["update"])) {
             </div>
             <div class="form-group row">
                 <div class="col-sm-10 offset-sm-2">
-                    <input type="submit" class="btn btn-primary" name="update" value="Actualizar">
-                    <button class="btn btn-danger" name="delete">Eliminar</button>
+                    <button type="submit" class="btn btn-primary" name="update">Actualizar</button>
+                    <button class="btn btn-danger" name="delete" onclick="return confirmarEliminacion()">Eliminar</button>
                 </div>
             </div>
         </form>
     </div>
+    <script>
+        function confirmarEliminacion() {
+            if (confirm("¿Estás seguro de que deseas eliminar este estado?")) {
+                document.forms["frm_consulta"].submit();
+            } else {
+                return false;
+            }
+        }
+    </script>
 </body>
 
 </html>

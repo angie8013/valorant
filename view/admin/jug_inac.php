@@ -200,7 +200,6 @@ $result = $con->query($sql);
                                                         <td><?php echo $row['username']; ?></td>
                                                         <td><?php echo $row['estado']; ?></td>
                                                         <td><?php echo $row['ult_ini']; ?></td>
-                                                        <td></td>
                                                         <td>
                                                             <button type="button" class="btn btn-<?php echo ($row['estado'] === 'Activo') ? 'danger' : 'success'; ?> btn-activate" data-id="<?php echo $row['username']; ?>" data-current-state="<?php echo $row['estado']; ?>" onclick="return confirmAction(this);">
                                                                 <?php echo ($row['estado'] === 'Activo') ? 'Desactivar' : 'Activar'; ?>

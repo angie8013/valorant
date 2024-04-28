@@ -56,11 +56,11 @@ if((isset($_POST["MM_insert"]))&&($_POST["MM_insert"]=="formreg")){
     <form action="#" method="post">
       <img src="../../img/Valorant-Logo_rojo.png" alt="" class="img">
       <div class="input-box">
-        <input type="text" id="correo" name="correo" placeholder="Correo" required>
+        <input type="email" id="correo" name="correo" placeholder="Correo" required>
         <i class='bx bx-envelope'></i>  
         </div>
         <div class="input-box">
-          <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+        <input type="text" id="nombre" name="nombre" placeholder="Nombre" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñüÜ\s]+" title="Solo se permiten letras" required>
           <i class='bx bxs-user'></i>
         </div>
       <div class="input-box">

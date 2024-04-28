@@ -1,11 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['id_jugador'], $_SESSION['username'])) {
-    // Si la sesión no está iniciada, retorna un mensaje de error
-    echo 'Error: Debes iniciar sesión antes de acceder a esta funcionalidad.';
-    exit();
-}
+
 
 // Verifica si se recibieron los datos necesarios
 if (isset($_POST['userId'], $_POST['currentState'])) {
@@ -13,15 +9,19 @@ if (isset($_POST['userId'], $_POST['currentState'])) {
     $userId = $_POST['userId'];
     $currentState = $_POST['currentState'];
 
-    // Realiza la actualización en la base de datos según el estado actual
-    require_once("../../db/conection.php");
-    $db = new Database();
-    $con = $db->conectar();
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "valorant";
+    
+    // Crear conexión
+    $con = new mysqli($servername, $username, $password, $dbname);
+    
 
     if ($currentState === 'Activar') {
-        $sql = "UPDATE jugador SET id_estado = 1 WHERE id_jugador = ?";
+        $sql = "UPDATE jugador SET id_estado = 1 WHERE username = ?";
     } else {
-        $sql = "UPDATE jugador SET id_estado = 2 WHERE id_jugador = ?";
+        $sql = "UPDATE jugador SET id_estado = 2 WHERE username = ?";
     }
     
 

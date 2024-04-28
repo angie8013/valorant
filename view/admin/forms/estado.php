@@ -176,7 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <form method="POST">
                                     <div class="form-group">
                                         <label for="estado">Estado:</label>
-                                        <input type="text" class="form-control" id="estado" name="estado" required>
+                                        <input type="text" class="form-control" id="estado" name="estado" pattern="[A-Za-z]+" title="Solo se permiten letras" required>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Guardar estado</button>
                                 </form>

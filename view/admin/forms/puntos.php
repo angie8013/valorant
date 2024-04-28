@@ -206,7 +206,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="form-group">
                                     <label for="rango">Rango:</label>
-                                    <input type="text" class="form-control" id="rango" name="rango" required>
+                                    <input type="text" class="form-control" id="rango" name="rango" pattern="[A-Za-z]+" title="Solo se permiten letras" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="rango_img">Rango Img:</label>

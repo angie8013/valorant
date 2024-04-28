@@ -1,13 +1,7 @@
 <?php
 session_start();
 
-// Verificar si la sesión no está iniciada
-if (!isset($_SESSION["id_jugador"])) {
-    // Mostrar un alert y redirigir utilizando JavaScript
-    echo '<script>alert("Debes iniciar sesión antes de acceder a la interfaz de administrador.");</script>';
-    echo '<script>window.location.href = "../../../index.php";</script>';
-    exit();
-}
+
 
 require_once("../../../db/conection.php");
 $db = new Database();
@@ -174,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <form method="POST">
                                     <div class="form-group">
                                         <label for="tipo_arma">Tipo de arma:</label>
-                                        <input type="text" class="form-control" id="tipo_arma" name="tipo_arma" required>
+                                        <input type="text" class="form-control" id="tipo_arma" name="tipo_arma" pattern="[A-Za-z]+" title="Solo se permiten letras" required>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Guardar Tipo de Arma</button>
                                 </form>

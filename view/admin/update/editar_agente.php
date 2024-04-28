@@ -1,14 +1,6 @@
 <?php
 session_start();
 
-// Verificar si la sesión no está iniciada
-if (!isset($_SESSION["id_jugador"])) {
-    // Mostrar un alert y redirigir utilizando JavaScript
-    echo '<script>alert("Debes iniciar sesión antes de acceder a la interfaz de administrador.");</script>';
-    echo '<script>window.location.href = "../../../index.php";</script>';
-    exit();
-}
-
 require_once("../../../db/conection.php");
 $db = new Database();
 $con = $db->conectar();
@@ -28,21 +20,21 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 if (isset($_POST["update"])) {
     $id_agente = $_POST['id_agente'];
     $nombre = $_POST['nombre'];
-    $foto = $_FILES['foto'];
+    $agente = $_FILES['agente'];
 
-    // Verificar si se ha cargado una nueva foto
-    if (!empty($foto['name'])) {
-        $fotoNombre = $foto['name'];
-        $fotoTmp = $foto['tmp_name'];
+    // Verificar si se ha cargado un nuevo agente
+    if (!empty($agente['name'])) {
+        $agenteNombre = $agente['name'];
+        $agenteTmp = $agente['tmp_name'];
 
-        // Obtener el contenido binario de la imagen
-        $fotoBinario = file_get_contents($fotoTmp);
+        // Obtener el contenido binario del archivo
+        $agenteBinario = file_get_contents($agenteTmp);
 
-        // Actualizar la foto en la base de datos
-        $updateFotoSQL = $con->prepare("UPDATE agente SET foto = ? WHERE id_agente = ?");
-        $updateFotoSQL->bindParam(1, $fotoBinario, PDO::PARAM_LOB);
-        $updateFotoSQL->bindParam(2, $id_agente, PDO::PARAM_INT);
-        $updateFotoSQL->execute();
+        // Actualizar el agente en la base de datos
+        $updateAgenteSQL = $con->prepare("UPDATE agente SET agente = ? WHERE id_agente = ?");
+        $updateAgenteSQL->bindParam(1, $agenteBinario, PDO::PARAM_LOB);
+        $updateAgenteSQL->bindParam(2, $id_agente, PDO::PARAM_INT);
+        $updateAgenteSQL->execute();
     }
 
     // Actualizar el nombre del agente
@@ -91,9 +83,9 @@ if (isset($_POST["update"])) {
                 </div>
             </div>
             <div class="form-group row">
-                <label for="foto" class="col-sm-2 col-form-label">Foto</label>
+                <label for="agente" class="col-sm-2 col-form-label">Agente</label>
                 <div class="col-sm-10">
-                    <input type="file" class="form-control-file" id="foto" name="foto">
+                    <input type="file" class="form-control-file" id="agente" name="agente">
                 </div>
             </div>
             <script>
@@ -114,9 +106,6 @@ if (isset($_POST["update"])) {
                     <button class="btn btn-danger" name="delete" onclick="return confirmarEliminacion()">Eliminar</button>
                 </div>
             </div>
-
-
-
         </form>
     </div>
 </body>

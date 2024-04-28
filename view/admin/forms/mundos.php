@@ -228,7 +228,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="nombre">Nombre:</label>
-                                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                        <input type="text" class="form-control" pattern="[A-Za-z]+" title="Solo se permiten letras" id="nombre" name="nombre" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="mundo">Mundo:</label>

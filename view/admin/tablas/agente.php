@@ -169,7 +169,7 @@ $resultado = $con->query($sql);
                     echo "<tr>";
                     echo "<td>" . $fila['id_agente'] . "</td>";
                     echo "<td>" . $fila['nombre'] . "</td>";
-                    echo "<td><img src='data:image/jpeg;base64," . base64_encode($fila['foto']) . "' width='100' height='100'></td>";
+                    echo "<td><img src='data:image/jpeg;base64," . base64_encode($fila['agente']) . "' width='100' height='100'></td>";
                     echo "<td><a href='../update/editar_agente.php?id=" . $fila['id_agente'] . "' class='btn btn-primary'  onclick=\"window.open('../update/editar_agente.php?id={$fila['id_agente']}','','width=500,height=500,toolbar=NO'); return false;\">Editar</a></td>"; // Botón de editar con enlace a la página de edición
                     echo "</tr>";
                 }

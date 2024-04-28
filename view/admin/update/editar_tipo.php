@@ -1,14 +1,6 @@
 <?php
 session_start();
 
-// Verificar si la sesión no está iniciada
-if (!isset($_SESSION["id_jugador"])) {
-    // Mostrar un alert y redirigir utilizando JavaScript
-    echo '<script>alert("Debes iniciar sesión antes de acceder a la interfaz de administrador.");</script>';
-    echo '<script>window.location.href = "../../../index.php";</script>';
-    exit();
-}
-
 require_once("../../../db/conection.php");
 $db = new Database();
 $con = $db->conectar();

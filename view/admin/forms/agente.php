@@ -11,11 +11,11 @@ $error_message = "";
 
 // Si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Verificar si se cargó una foto y se proporcionó un nombre
-    if (isset($_POST['nombre']) && isset($_FILES['foto'])) {
+    // Verificar si se proporcionó un nombre y se cargó un agente
+    if (isset($_POST['nombre']) && isset($_FILES['agente'])) {
         // Recuperar los datos del formulario
         $nombre = $_POST['nombre'];
-        $foto = $_FILES['foto'];
+        $agente = $_FILES['agente'];
 
         // Verificar si ya existe un agente con el mismo nombre
         $stmtCheckName = $con->prepare("SELECT * FROM agente WHERE nombre = ?");
@@ -24,14 +24,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Ya existe un agente con este nombre
             $error_message = "Ya existe un agente con este nombre.";
         } else {
-            // Obtener el contenido binario de la imagen
-            $fotoBinario = file_get_contents($foto['tmp_name']);
+            // Obtener el contenido binario del agente
+            $agenteBinario = file_get_contents($agente['tmp_name']);
 
             // Preparar la consulta SQL para insertar los datos en la tabla agente
-            $sql = "INSERT INTO agente (nombre, foto) VALUES (:nombre, :foto)";
+            $sql = "INSERT INTO agente (nombre, agente) VALUES (:nombre, :agente)";
             $stmt = $con->prepare($sql);
             $stmt->bindParam(':nombre', $nombre);
-            $stmt->bindParam(':foto', $fotoBinario, PDO::PARAM_LOB);
+            $stmt->bindParam(':agente', $agenteBinario, PDO::PARAM_LOB);
 
             // Ejecutar la consulta
             if ($stmt->execute()) {
@@ -229,11 +229,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="nombre">Nombre:</label>
-                                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                        <input type="text" class="form-control" id="nombre" name="nombre" pattern="[A-Za-z]+" title="Solo se permiten letras"required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="foto">Foto:</label>
-                                        <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" required>
+                                        <label for="agente">Agente:</label>
+                                        <input type="file" class="form-control-file" id="agente" name="agente" accept="image/*" required>
                                     </div>
 
                                     <button type="submit" class="btn btn-primary">Guardar Agente</button>

@@ -7,6 +7,9 @@
 body {
 	background: #f4f4f7;
 	font-family: 'Open Sans', sans-serif;
+	background: url(../img/fondo.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 a {
@@ -27,7 +30,7 @@ a {
 }
 
 .select {
-	background: #fff;
+	background: #3c3737;
 	width: 100%;
 	box-shadow: 0px 0px 0px rgba(0, 0, 0, .16);
 	border-radius: 10px;
@@ -46,7 +49,7 @@ a {
 .select.active,
 .select:hover {
 	box-shadow: 0px 5px 10px rgba(0, 0, 0, .16);
-	border: 2px solid #213f8f;
+	border: 2px solid #330101;
 }
 
 .select.active:before {
@@ -54,7 +57,7 @@ a {
 	display: block;
 	height: 0;
 	width: 0;
-	border-top: 15px solid #213f8f;
+	border-top: 15px solid #330101;
 	border-right: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	border-left: 15px solid transparent;
@@ -66,7 +69,7 @@ a {
 .select i {
 	font-size: 30px;
 	margin-left: 30px;
-	color: #213f8f;
+	color: #330101;
 }
 
 .titulo {
@@ -82,7 +85,7 @@ a {
 }
 
 .opciones {
-	background: #fff;
+	background: #b64545;
 	border-radius: 10px;
 	box-shadow: 0px 5px 10px rgba(0,0,0,.16);
 	max-height: 400px;
@@ -111,6 +114,8 @@ a {
 	display: flex;
 	align-items: center;
 	transition: .2s ease all;
+    display: block;
+	background:#502323 ;
 }
 
 .opciones .contenido-opcion {
@@ -124,12 +129,12 @@ a {
 }
 
 .opciones .contenido-opcion:hover {
-	background: #213F8F;
+	background: #483838;
 }
 
 .opciones .contenido-opcion:hover .titulo,
 .opciones .contenido-opcion:hover .descripcion {
-	color: #fff;
+	color: #000000;
 }
 
 @media screen and (max-width: 800px){

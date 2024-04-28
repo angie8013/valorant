@@ -51,7 +51,7 @@ if (isset($_GET['id_detalle'])) {
 
 <body>
     <div class="contenedor">
-    <form action="enemigo_up.php" method="post">    
+        <form action="enemigo_up.php" method="post">    
             <div class="selectbox">
                 <div class="select" id="select">
                     <div class="contenido-select">
@@ -77,6 +77,7 @@ if (isset($_GET['id_detalle'])) {
                     </div>
                 </div>
             </div>
+            <input type="hidden" name="id_detalle" value="<?php echo $id_detalle; ?>">
         </form>
     </div>
 
