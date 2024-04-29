@@ -120,7 +120,7 @@ $conexion = null;
                 <i class='bx bxs-bot'></i>
                 <span>Agentes</span>
              </a> 
-             <a href="" class="sidebar-link">
+             <a href="estadisticas.php" class="sidebar-link">
              <i class='bx bx-line-chart'></i>
                 <span>Estadisticas</span>
              </a>

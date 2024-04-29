@@ -1,0 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background:  url(../img/fondo.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.container {
+    border: solid 1px rgba(255, 255, 255, 0.2);
+}
+
+table {
+    color: #fff;
+    font-size: 14px;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+thead {
+    background: rgba(233, 84, 84, 0.4);
+}
+
+th {
+    padding: 20px 15px ;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 15px;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.2);
+}
+
+
+tbody tr {
+    cursor: pointer;
+}
+
+tbody tr:hover {
+    background: rgba(0, 0, 0, 0.4);
+}

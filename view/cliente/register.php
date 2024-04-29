@@ -34,7 +34,7 @@ if((isset($_POST["MM_insert"]))&&($_POST["MM_insert"]=="formreg")){
      VALUES ('$correo', '$nombre', '$username','$contrasena')");
     $insertSQL->execute();
     echo '<script>alert("Registro exitoso"); </script>';
-    echo '<script>window.location = "register.php"</script>';
+    echo '<script>window.location = "../index.php"</script>';
     }
 }
 
