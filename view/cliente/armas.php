@@ -14,26 +14,32 @@ if (!isset($_SESSION['username'])) {
     die();
 }
 
-// Obtener el nivel del jugador
-$username = $_SESSION['username'];
-$stmt = $con->prepare("SELECT jugador.id_puntos, puntos.nivel 
-                      FROM jugador 
-                      INNER JOIN puntos ON jugador.id_puntos = puntos.id_puntos
-                      WHERE jugador.username = :username");
-$stmt->bindParam(':username', $username);
-$stmt->execute();
-$jugador = $stmt->fetch(PDO::FETCH_ASSOC);
-$nivel_jugador = $jugador['nivel'];
+// Verificar si el id_detalle está presente en la URL
+if (isset($_GET['id_detalle'])) {
+    $id_detalle = $_GET['id_detalle'];
 
-// Consulta para obtener las armas del mismo nivel que el jugador
-$puntos = $con->prepare("SELECT * FROM arma WHERE nivel = :nivel_jugador");
-$puntos->bindParam(':nivel_jugador', $nivel_jugador);
-$puntos->execute();
+    // Consultar si el id_detalle está presente en la tabla detalle_batalla
+    $stmt_verificar_detalle = $con->prepare("SELECT COUNT(*) FROM detalle_batalla WHERE id_detalle = :id_detalle");
+    $stmt_verificar_detalle->bindParam(':id_detalle', $id_detalle);
+    $stmt_verificar_detalle->execute();
+    $existe_detalle = $stmt_verificar_detalle->fetchColumn();
 
-// Consulta para obtener los id_detalle de la tabla detalle_batalla
-$punto = $con->prepare("SELECT * FROM detalle_batalla WHERE id_sala = :username");
-$punto->bindParam(':username', $username);
-$punto->execute();
+    if ($existe_detalle == 0) {
+        // Si el id_detalle no se encuentra en la tabla detalle_batalla, mostrar un mensaje y redirigir
+        echo '<script>
+                alert("Usted ha sido eliminado.");
+                window.location = "mapa.php";
+              </script>';
+        exit(); // Asegurar la salida después de la redirección
+    }
+} else {
+    // Si no se proporcionó el id_detalle en la URL, redirigir a alguna página de error
+    echo '<script>
+            alert("ID de detalle no proporcionado.");
+            window.location = "mapa.php";
+          </script>';
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -57,10 +63,25 @@ $punto->execute();
 
         <div class="card__container">
             <?php
+            // Consultar las armas del mismo nivel que el jugador
+            $username = $_SESSION['username'];
+            $stmt = $con->prepare("SELECT jugador.id_puntos, puntos.nivel 
+                                  FROM jugador 
+                                  INNER JOIN puntos ON jugador.id_puntos = puntos.id_puntos
+                                  WHERE jugador.username = :username");
+            $stmt->bindParam(':username', $username);
+            $stmt->execute();
+            $jugador = $stmt->fetch(PDO::FETCH_ASSOC);
+            $nivel_jugador = $jugador['nivel'];
+
+            $puntos = $con->prepare("SELECT * FROM arma WHERE nivel = :nivel_jugador");
+            $puntos->bindParam(':nivel_jugador', $nivel_jugador);
+            $puntos->execute();
+
             if ($puntos->rowCount() > 0) {
-                // Iteramos sobre cada resultado para mostrar las tarjetas
+                // Mostrar las tarjetas de armas
                 while ($info = $puntos->fetch(PDO::FETCH_ASSOC)) {
-                    ?>
+            ?>
                     <article class="card__article">
                         <?php echo "<img src='data:image/jpeg; base64," . base64_encode($info['arma']) . "'>"; ?>
                         <div class="card__data">
@@ -77,17 +98,14 @@ $punto->execute();
                             </div>
                         </div>
                     </article>
-                    <?php
+            <?php
                 }
             } else {
-                // No se encontraron resultados
+                // Si no hay armas disponibles
                 echo "No hay armas registradas.";
             }
             ?>
-
-
         </div>
-
     </div>
     <center>
         <button class="valorant-btn" id="redireccionarBtn">
@@ -108,6 +126,20 @@ $punto->execute();
             window.location.href = "enemigos.php?id_detalle=" + id_detalle;
         });
     </script>
+   <script>
+    // Recargar la página cada 3 segundos de manera suave
+    setInterval(function() {
+        // Obtener el scrollTop actual antes de recargar la página
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+        // Recargar la página
+        location.reload();
+
+        // Restaurar el scrollTop después de la recarga para mantener la posición de desplazamiento
+        window.scrollTo(0, scrollTop);
+    }, 3000);
+</script>
+
 </body>
 
 </html>
