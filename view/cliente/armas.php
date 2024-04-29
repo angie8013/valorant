@@ -32,10 +32,25 @@ if (isset($_GET['id_detalle'])) {
               </script>';
         exit(); // Asegurar la salida después de la redirección
     }
+
+    // Contar el número de registros para el id_sala correspondiente al id_detalle
+    $stmt_contar_registros = $con->prepare("SELECT COUNT(*) FROM detalle_batalla WHERE id_sala = (SELECT id_sala FROM detalle_batalla WHERE id_detalle = :id_detalle)");
+    $stmt_contar_registros->bindParam(':id_detalle', $id_detalle);
+    $stmt_contar_registros->execute();
+    $num_registros = $stmt_contar_registros->fetchColumn();
+
+    if ($num_registros == 1) {
+        // Si solo hay un registro para el id_sala, mostrar un mensaje de ganador
+        echo '<script>
+                alert("¡Felicidades! Usted es el ganador.");
+                // Aquí puedes redirigir a una página de victoria o realizar otras acciones
+              </script>';
+    }
 } else {
     // Si no se proporcionó el id_detalle en la URL, redirigir a alguna página de error
     echo '<script>
             alert("ID de detalle no proporcionado.");
+            window.location = "mapa.php";
             window.location = "mapa.php";
           </script>';
     exit();
