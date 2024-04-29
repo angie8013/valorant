@@ -34,8 +34,8 @@ if (isset($_POST['valor'])) {
             $stmt_info_jugador->execute();
             $info_jugador = $stmt_info_jugador->fetch(PDO::FETCH_ASSOC);
 
-            // Obtener el valor de 'dano' del arma seleccionado
-            $stmt_info_arma = $con->prepare("SELECT dano FROM arma WHERE id_arma = :id_arma");
+            // Obtener el valor de 'dano' y 'puntos' del arma seleccionado
+            $stmt_info_arma = $con->prepare("SELECT dano, puntos FROM arma WHERE id_arma = :id_arma");
             $stmt_info_arma->bindParam(':id_arma', $id_arma);
             $stmt_info_arma->execute();
             $info_arma = $stmt_info_arma->fetch(PDO::FETCH_ASSOC);
@@ -49,11 +49,38 @@ if (isset($_POST['valor'])) {
             // Obtener la vida actual del jugador atacado
             $id_jugador_atacado = $info_jugador['id_jugador_atacado'];
             $dano_arma = $info_arma['dano'];
+            $puntos_arma = $info_arma['puntos'];
 
+            // Actualizar la vida del jugador atacado
             $stmt_restar_vida = $con->prepare("UPDATE detalle_batalla SET puntos_vida = puntos_vida - :dano_arma WHERE id_jugador_atacante = :id_jugador_atacado");
             $stmt_restar_vida->bindParam(':dano_arma', $dano_arma);
             $stmt_restar_vida->bindParam(':id_jugador_atacado', $id_jugador_atacado);
             $stmt_restar_vida->execute();
+
+            // Sumar los puntos del arma al puntaje del jugador que inició sesión
+            $stmt_sumar_puntos = $con->prepare("UPDATE jugador SET puntos = puntos + :puntos_arma WHERE username = :username");
+            $stmt_sumar_puntos->bindParam(':puntos_arma', $puntos_arma);
+            $stmt_sumar_puntos->bindParam(':username', $username);
+            $stmt_sumar_puntos->execute();
+
+            // Actualizar el estado de la batalla si ha pasado el límite de tiempo
+            $stmt_update_estado = $con->prepare("UPDATE detalle_batalla SET id_estado = 4 WHERE hora_acc <= NOW() - INTERVAL 5 MINUTE");
+            $stmt_update_estado->execute();
+
+            // Verificar si el estado es igual a 4
+            $stmt_estado_actualizado = $con->prepare("SELECT id_estado FROM detalle_batalla WHERE id_detalle = :id_detalle");
+            $stmt_estado_actualizado->bindParam(':id_detalle', $id_detalle);
+            $stmt_estado_actualizado->execute();
+            $id_estado_actualizado = $stmt_estado_actualizado->fetchColumn();
+
+            if ($id_estado_actualizado == 4) {
+                // Si el estado es igual a 4, significa que el límite de tiempo ha sido superado
+                echo '<script>
+                        alert("Te hemos expulsado de la sala. Has pasado el límite de tiempo.");
+                        window.location = "mapa.php"; 
+                      </script>';
+                exit(); // Asegurarse de salir del script después de la redirección
+            }
 
             // Mostrar mensaje de alerta
             echo '<script>
@@ -77,3 +104,4 @@ if (isset($_POST['valor'])) {
     header("Location: pagina_de_error.php");
     exit();
 }
+?>

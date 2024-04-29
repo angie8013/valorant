@@ -3,6 +3,8 @@ include("../../db/conection.php");
 $db = new Database();
 $con = $db->conectar();
 session_start();
+date_default_timezone_set('America/Bogota');
+
 
 // Verificar si el usuario está autenticado
 if (!isset($_SESSION['username'])) {
@@ -15,8 +17,8 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Verificar si se recibieron los datos del formulario
-if (isset($_POST['jugador_atacante']) && isset($_POST['id_detalle'])) { // Cambiado a $_POST
-    $id_detalle = $_POST['id_detalle']; // Cambiado a $_POST
+if (isset($_POST['jugador_atacante']) && isset($_POST['id_detalle'])) {
+    $id_detalle = $_POST['id_detalle'];
     $id_jugador_atacado = $_POST["jugador_atacante"];
 
     try {
@@ -25,6 +27,10 @@ if (isset($_POST['jugador_atacante']) && isset($_POST['id_detalle'])) { // Cambi
         $stmt_actualizar->bindParam(':id_jugador_atacado', $id_jugador_atacado);
         $stmt_actualizar->bindParam(':id_detalle', $id_detalle);
         $stmt_actualizar->execute();
+
+        // Consultar registros que han pasado más de 5 minutos desde su hora de acceso
+        $stmt_update_estado = $con->prepare("UPDATE detalle_batalla SET id_estado = 4 WHERE hora_acc <= NOW() - INTERVAL 5 MINUTE");
+        $stmt_update_estado->execute();
 
         // Redireccionar a alguna página de éxito o a donde sea necesario
         header("Location: armas.php?id_detalle=$id_detalle");

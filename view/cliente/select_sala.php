@@ -3,7 +3,7 @@ include("../../db/conection.php");
 $db = new Database();
 $con = $db->conectar();
 session_start();
-
+date_default_timezone_set('America/Bogota');
 // Verificar si el usuario está autenticado
 if (!isset($_SESSION['username'])) {
     echo '<script>
@@ -19,6 +19,25 @@ if (isset($_POST['elegir_sala']) && isset($_POST['id_sala'])) {
     $username = $_SESSION['username'];
 
     try {
+        // Contar cuántos registros hay en la tabla detalle_batalla para esta sala
+        $stmt_count = $con->prepare("SELECT COUNT(*) AS count FROM detalle_batalla WHERE id_sala = :id_sala");
+        $stmt_count->bindParam(':id_sala', $id_sala);
+        $stmt_count->execute();
+        $row_count = $stmt_count->fetch(PDO::FETCH_ASSOC);
+        $registro_count = $row_count["count"];
+
+        // Verificar si ya hay 5 registros para esta sala
+        if ($registro_count >= 5) {
+            // Si hay 5 registros, mostrar un mensaje de error y redireccionar
+            echo '<script>
+                    alert("La sala ya está llena. Por favor, elija otra sala.");
+                    window.location = "mapa.php";
+                  </script>';
+            exit();
+        }
+
+        // Si no hay 5 registros, proceder con el registro del usuario en la sala
+
         // Obtener los puntos del jugador
         $stmt_puntos = $con->prepare("SELECT id_puntos FROM jugador WHERE username = :username");
         $stmt_puntos->bindParam(':username', $username);
@@ -39,7 +58,7 @@ if (isset($_POST['elegir_sala']) && isset($_POST['id_sala'])) {
         $id_avatar = $stmt_id_avatar->fetchColumn();
 
         // Insertar el nuevo registro en la tabla "detalle_batalla"
-        $stmt_detalle = $con->prepare("INSERT INTO detalle_batalla (id_sala, id_mundo, id_jugador_atacante, id_agente) VALUES (:id_sala, :id_mundo, :username, :id_avatar)");
+        $stmt_detalle = $con->prepare("INSERT INTO detalle_batalla (id_sala, id_mundo, id_jugador_atacante, id_agente, hora_acc) VALUES (:id_sala, :id_mundo, :username, :id_avatar, NOW())");
         $stmt_detalle->bindParam(':id_sala', $id_sala);
         $stmt_detalle->bindParam(':id_mundo', $id_mundo);
         $stmt_detalle->bindParam(':username', $username);
@@ -48,6 +67,11 @@ if (isset($_POST['elegir_sala']) && isset($_POST['id_sala'])) {
 
         // Obtener el id_detalle recién insertado
         $id_detalle = $con->lastInsertId();
+
+        // Actualizar el estado de los registros que han pasado más de 5 minutos desde su registro
+        $stmt_update_estado = $con->prepare("UPDATE detalle_batalla SET id_estado = 4 WHERE id_sala = :id_sala AND hora_acc <= NOW() - INTERVAL 5 MINUTE");
+        $stmt_update_estado->bindParam(':id_sala', $id_sala);
+        $stmt_update_estado->execute();
 
         // Cerrar la conexión
         $con = null;
@@ -67,5 +91,3 @@ if (isset($_POST['elegir_sala']) && isset($_POST['id_sala'])) {
     exit();
 }
 ?>
-
-
