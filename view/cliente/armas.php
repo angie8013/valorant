@@ -45,7 +45,12 @@ if (isset($_GET['id_detalle'])) {
                 alert("¡Felicidades! Usted es el ganador.");
                 window.location = "ganador.php";
               </script>';
+        // Eliminar el id_detalle después de mostrar el aviso de ganador
+        $stmt_eliminar_detalle = $con->prepare("DELETE FROM detalle_batalla WHERE id_detalle = :id_detalle");
+        $stmt_eliminar_detalle->bindParam(':id_detalle', $id_detalle);
+        $stmt_eliminar_detalle->execute();
     }
+    
 } else {
     // Si no se proporcionó el id_detalle en la URL, redirigir a alguna página de error
     echo '<script>
