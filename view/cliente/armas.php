@@ -126,6 +126,20 @@ if (isset($_GET['id_detalle'])) {
             window.location.href = "enemigos.php?id_detalle=" + id_detalle;
         });
     </script>
+   <script>
+    // Recargar la página cada 3 segundos de manera suave
+    setInterval(function() {
+        // Obtener el scrollTop actual antes de recargar la página
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+        // Recargar la página
+        location.reload();
+
+        // Restaurar el scrollTop después de la recarga para mantener la posición de desplazamiento
+        window.scrollTo(0, scrollTop);
+    }, 3000);
+</script>
+
 </body>
 
 </html>
