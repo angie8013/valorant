@@ -65,7 +65,7 @@ if (isset($_GET['id_detalle'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../css/armas.css">
     <link rel="stylesheet" href="../../css/armas.css">
-
+    <link rel="icon" href="../../img/icono_valo.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">

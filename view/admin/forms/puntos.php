@@ -47,8 +47,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin</title>
-   <!-- BOOTSTRAP STYLES-->
-   <link href="../../../css/bootstrap.css" rel="stylesheet" />
+    <!-- BOOTSTRAP STYLES-->
+    <link href="../../../css/bootstrap.css" rel="stylesheet" />
     <!-- FONTAWESOME STYLES-->
     <link href="../../../css/font-awesome.css" rel="stylesheet" />
     <!-- MORRIS CHART STYLES-->
@@ -57,6 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="../../../css/custom.css" rel="stylesheet" />
     <!-- GOOGLE FONTS-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <link rel="icon" href="../../../img/icono_valo.png" type="image/x-icon">
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
@@ -77,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <div id="wrapper">
-    <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
                     <span class="sr-only"></span>
@@ -115,9 +116,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a href="../salas.php"><i class='bx bx-cube-alt fa-3x'></i> Salas</a>
                     </li>
                     <li>
-                    <a class=""><i class='bx bx-sitemap fa-3x'></i> Tablas<span class='bx bx-chevron-down'></span></a>
+                        <a class=""><i class='bx bx-sitemap fa-3x'></i> Tablas<span class='bx bx-chevron-down'></span></a>
                         <ul class="nav nav-second-level">
-                        <li>
+                            <li>
                                 <a href="../tablas/jugador.php">Jugadores</a>
                             </li>
                             <li>
@@ -149,7 +150,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <li>
                         <a class="active-menu" href="#"><i class='bx bx-sitemap fa-3x'></i> Formularios<span class='bx bx-chevron-down'></span></a>
                         <ul class="nav nav-second-level">
-                        <li>
+                            <li>
                                 <a href="jugador.php">Jugadores</a>
                             </li>
                             <li>
@@ -179,71 +180,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </ul>
             </div>
         </nav>
-    <!-- /. NAV SIDE  -->
-    <div id="page-wrapper">
-        <div id="page-inner">
-            <div class="row">
-                <div class="col-md-12">
-                <h2   style="margin-bottom: 20px; color: #333;"><strong>Formulario Rango</strong></h2>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 style="margin-bottom: 20px; color: #333;"><strong>Formulario Rango</strong></h2>
+                    </div>
                 </div>
-            </div>
-            <hr />
-            <!-- /. ROW  -->
-            <div class="row">
-                <div class="col-md-9 col-sm-12 col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                        <h3>Registrar Rango</h3>            
-                            <!-- Formulario para agregar puntos -->
-                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <label for="puntos">Puntos:</label>
-                                    <input type="number" class="form-control" id="puntos" name="puntos" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="nivel">Nivel:</label>
-                                    <input type="number" class="form-control" id="nivel" name="nivel" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="rango">Rango:</label>
-                                    <input type="text" class="form-control" id="rango" name="rango" pattern="[A-Za-z]+" title="Solo se permiten letras" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="rango_img">Rango Img:</label>
-                                    <input type="file" class="form-control-file" id="rango_img" name="rango_img" accept="image/*" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Registrar</button>
-                            </form>
-                            <!-- Mensaje de éxito -->
-                            <?php if (!empty($success_message)) : ?>
-                                <div class="alert alert-success" role="alert">
-                                    <?php echo $success_message; ?>
-                                </div>
-                            <?php endif; ?>
-                            <!-- Mensaje de error -->
-                            <?php if (!empty($error_message)) : ?>
-                                <div class="alert alert-danger" role="alert">
-                                    <?php echo $error_message; ?>
-                                </div>
-                            <?php endif; ?>
+                <hr />
+                <!-- /. ROW  -->
+                <div class="row">
+                    <div class="col-md-9 col-sm-12 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <h3>Registrar Rango</h3>
+                                <!-- Formulario para agregar puntos -->
+                                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="puntos">Puntos:</label>
+                                        <input type="number" class="form-control" id="puntos" name="puntos" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nivel">Nivel:</label>
+                                        <input type="number" class="form-control" id="nivel" name="nivel" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="rango">Rango:</label>
+                                        <input type="text" class="form-control" id="rango" name="rango" pattern="[A-Za-z]+" title="Solo se permiten letras" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="rango_img">Rango Img:</label>
+                                        <input type="file" class="form-control-file" id="rango_img" name="rango_img" accept="image/*" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Registrar</button>
+                                </form>
+                                <!-- Mensaje de éxito -->
+                                <?php if (!empty($success_message)) : ?>
+                                    <div class="alert alert-success" role="alert">
+                                        <?php echo $success_message; ?>
+                                    </div>
+                                <?php endif; ?>
+                                <!-- Mensaje de error -->
+                                <?php if (!empty($error_message)) : ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?php echo $error_message; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- /. PAGE INNER  -->
             </div>
-            <!-- /. PAGE INNER  -->
+            <!-- /. PAGE WRAPPER  -->
         </div>
-        <!-- /. PAGE WRAPPER  -->
-    </div>
-    <script src="../../../js/jquery-1.10.2.js"></script>
-            <!-- BOOTSTRAP SCRIPTS -->
-            <script src="../../../js/bootstrap.min.js"></script>
-            <!-- METISMENU SCRIPTS -->
-            <script src="../../../js/jquery.metisMenu.js"></script>
-            <!-- MORRIS CHART SCRIPTS -->
-            <script src="../../../js/morris/raphael-2.1.0.min.js"></script>
-            <script src="../../../js/morris/morris.js"></script>
-            <!-- CUSTOM SCRIPTS -->
-            <script src="../../../js/custom.js"></script>
+        <script src="../../../js/jquery-1.10.2.js"></script>
+        <!-- BOOTSTRAP SCRIPTS -->
+        <script src="../../../js/bootstrap.min.js"></script>
+        <!-- METISMENU SCRIPTS -->
+        <script src="../../../js/jquery.metisMenu.js"></script>
+        <!-- MORRIS CHART SCRIPTS -->
+        <script src="../../../js/morris/raphael-2.1.0.min.js"></script>
+        <script src="../../../js/morris/morris.js"></script>
+        <!-- CUSTOM SCRIPTS -->
+        <script src="../../../js/custom.js"></script>
 </body>
 
 </html>

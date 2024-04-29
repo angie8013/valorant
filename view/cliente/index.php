@@ -92,6 +92,8 @@ $conexion = null;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="stylesheet" href="../../css/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" href="../../img/icono_valo.png" type="image/x-icon">
+
     
 </head>
 <body>
@@ -120,7 +122,7 @@ $conexion = null;
                 <i class='bx bxs-bot'></i>
                 <span>Agentes</span>
              </a> 
-             <a href="" class="sidebar-link">
+             <a href="estadisticas.php" class="sidebar-link">
              <i class='bx bx-line-chart'></i>
                 <span>Estadisticas</span>
              </a>
