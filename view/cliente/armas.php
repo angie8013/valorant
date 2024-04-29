@@ -43,7 +43,7 @@ if (isset($_GET['id_detalle'])) {
         // Si solo hay un registro para el id_sala, mostrar un mensaje de ganador
         echo '<script>
                 alert("¡Felicidades! Usted es el ganador.");
-                // Aquí puedes redirigir a una página de victoria o realizar otras acciones
+                window.location = "ganador.php";
               </script>';
     }
 } else {
@@ -51,7 +51,7 @@ if (isset($_GET['id_detalle'])) {
     echo '<script>
             alert("ID de detalle no proporcionado.");
             window.location = "mapa.php";
-            window.location = "mapa.php";
+            
           </script>';
     exit();
 }
