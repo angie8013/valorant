@@ -72,6 +72,7 @@ if (isset($_GET['id_detalle'])) {
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../../css/estilos.css">
+    <link rel="icon" href="../../img/icono_valo.png" type="image/x-icon">
 </head>
 
 <body>

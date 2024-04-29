@@ -21,7 +21,7 @@ $username = $_SESSION['username'];
 $sql = "SELECT db.id_detalle, db.id_jugador_atacante, db.id_jugador_atacado, db.id_sala, 
                m.nombre AS nombre_mundo, a.nombre AS nombre_agente, 
                ar.nombre AS nombre_arma, db.puntos_vida 
-        FROM detalle_batalla db
+        FROM detalles db
         LEFT JOIN mundo m ON db.id_mundo = m.id_mundo
         LEFT JOIN agente a ON db.id_agente = a.id_agente
         LEFT JOIN arma ar ON db.id_arma = ar.id_arma
@@ -44,7 +44,8 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    <title>Document</title>
+    <link rel="icon" href="../../img/icono_valo.png" type="image/x-icon">
+    <title>Estadisticas</title>
 </head>
 
 <body>

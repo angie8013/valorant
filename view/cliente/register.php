@@ -48,6 +48,8 @@ if((isset($_POST["MM_insert"]))&&($_POST["MM_insert"]=="formreg")){
   
   <title>Registro</title>
   <link rel="stylesheet" href="../../css/register.css">
+  <link rel="icon" href="../../img/icono_valo.png" type="image/x-icon">
+
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   
 </head>

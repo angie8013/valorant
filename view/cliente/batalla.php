@@ -36,6 +36,8 @@ try {
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet"> 
 	<script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="../../css/batalla.css">
+	<link rel="icon" href="../../img/icono_valo.png" type="image/x-icon">
+
 </head>
 <body>
 	

@@ -66,6 +66,7 @@ if (isset($_POST["update"])) {
     <title>Actualizar Puntos</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="../../img/icono_valo.png" type="image/x-icon">
 </head>
 
 <body>

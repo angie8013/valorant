@@ -52,6 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- GOOGLE FONTS-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
+    <link rel="icon" href="../../../img/icono_valo.png" type="image/x-icon">
+
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 <body>
@@ -67,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <img src="../../../img/Valorant_logo.svg.png" class="navbar-brand" href="index.html"></img>
             </div>
             <form method="post" action="">
-            <div style="color: white; padding: 15px 50px 5px 50px; float: right; font-size: 16px;"> Ultimo: <?php echo $last_access; ?> &nbsp;
+                <div style="color: white; padding: 15px 50px 5px 50px; float: right; font-size: 16px;"> Ultimo: <?php echo $last_access; ?> &nbsp;
                     <input type="submit" name="btncerrar" class="btn btn-danger square-btn-adjust" value="Cerrar sesión">
                 </div>
             </form>
@@ -121,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <li>
                                 <a href="../tablas/roles.php">Roles</a>
                             </li>
-                            
+
                             <li>
                                 <a href="../tablas/tipo_armas.php">Tipos de armas</a>
                             </li>
@@ -139,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <li>
                                 <a href="armas.php">Armas</a>
                             </li>
-                            
+
                             <li>
                                 <a href="estado.php">Estado</a>
                             </li>
@@ -152,7 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <li>
                                 <a href="roles.php">Roles</a>
                             </li>
-                            
+
                             <li>
                                 <a href="tipo_armas.php">Tipos de armas</a>
                             </li>
@@ -167,7 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                    <h2   style="margin-bottom: 20px; color: #333;"><strong>Formulario Roles</strong></h2>
+                        <h2 style="margin-bottom: 20px; color: #333;"><strong>Formulario Roles</strong></h2>
                     </div>
                 </div>
                 <hr />
@@ -175,12 +177,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="row">
                     <div class="col-md-9 col-sm-12 col-xs-12">
                         <div class="panel panel-default">
-                        <div class="panel-body">
+                            <div class="panel-body">
                                 <h3>Registrar Rol</h3>
                                 <form method="POST">
                                     <div class="form-group">
                                         <label for="rol">Rol:</label>
-                                        <input type="text" class="form-control" id="rol" name="rol"  pattern="[A-Za-z]+" title="Solo se permiten letras"required>
+                                        <input type="text" class="form-control" id="rol" name="rol" pattern="[A-Za-z]+" title="Solo se permiten letras" required>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Guardar Rol</button>
                                 </form>
