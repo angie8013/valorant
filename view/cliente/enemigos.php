@@ -19,23 +19,38 @@ if (isset($_GET['id_detalle'])) {
     $id_detalle = $_GET['id_detalle'];
     $username = $_SESSION['username'];
 
-            $stmt_update_estado = $con->prepare("UPDATE detalle_batalla SET id_estado = 4 WHERE hora_acc <= NOW() - INTERVAL 5 MINUTE");
-            $stmt_update_estado->execute();
-
-            // Verificar si el estado es igual a 4
-            $stmt_estado_actualizado = $con->prepare("SELECT id_estado FROM detalle_batalla WHERE id_detalle = :id_detalle");
-            $stmt_estado_actualizado->bindParam(':id_detalle', $id_detalle);
-            $stmt_estado_actualizado->execute();
-            $id_estado_actualizado = $stmt_estado_actualizado->fetchColumn();
-
-            if ($id_estado_actualizado == 4) {
-                // Si el estado es igual a 4, significa que el límite de tiempo ha sido superado
-                echo '<script>
-                        alert("Te hemos expulsado de la sala. Has pasado el límite de tiempo.");
-                        window.location = "mapa.php"; 
-                      </script>';
-                exit(); // Asegurarse de salir del script después de la redirección
-            }
+    $stmt_update_estado = $con->prepare("UPDATE detalle_batalla SET id_estado = 4 WHERE hora_acc <= NOW() - INTERVAL 5 MINUTE");
+    $stmt_update_estado->execute();
+    
+    // Verificar si el estado es igual a 4
+    $stmt_estado_actualizado = $con->prepare("SELECT id_estado FROM detalle_batalla WHERE id_detalle = :id_detalle");
+    $stmt_estado_actualizado->bindParam(':id_detalle', $id_detalle);
+    $stmt_estado_actualizado->execute();
+    $id_estado_actualizado = $stmt_estado_actualizado->fetchColumn();
+    
+    if ($id_estado_actualizado == 4) {
+        // Si el estado es igual a 4, significa que el límite de tiempo ha sido superado
+        echo '<script>
+                alert("Te hemos expulsado de la sala. Has pasado el límite de tiempo.");
+                window.location = "mapa.php"; 
+              </script>';
+        exit(); // Asegurarse de salir del script después de la redirección
+    }
+    
+    // Verificar si el id_detalle está presente en la tabla detalle_batalla
+    $stmt_verificar_detalle = $con->prepare("SELECT COUNT(*) FROM detalle_batalla WHERE id_detalle = :id_detalle");
+    $stmt_verificar_detalle->bindParam(':id_detalle', $id_detalle);
+    $stmt_verificar_detalle->execute();
+    $existe_detalle = $stmt_verificar_detalle->fetchColumn();
+    
+    if ($existe_detalle == 0) {
+        // Si el id_detalle no se encuentra en la tabla detalle_batalla, redirigir a mapa.php
+        echo '<script>
+                alert("Lo siento, has sido eliminado.");
+                window.location = "mapa.php"; 
+              </script>';
+        exit(); // Asegurarse de salir del script después de la redirección
+    }
 
     try {
         // Consulta SQL para obtener los jugadores con el mismo id_sala
