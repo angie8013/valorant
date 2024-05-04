@@ -51,7 +51,6 @@ if (isset($_POST['valor'])) {
                 $puntos_arma = $info_arma['puntos'];
 
                 // Actualizar la vida del jugador atacado
-                // Actualizar la vida del jugador atacado
                 $stmt_restar_vida = $con->prepare("UPDATE detalle_batalla SET puntos_vida = puntos_vida - :dano_arma WHERE id_jugador_atacante = :id_jugador_atacado");
                 $stmt_restar_vida->bindParam(':dano_arma', $dano_arma);
                 $stmt_restar_vida->bindParam(':id_jugador_atacado', $id_jugador_atacado);
@@ -115,7 +114,10 @@ if (isset($_POST['valor'])) {
                 exit(); // Asegurarse de salir del script después de la redirección
             } else {
                 // Si no se encontró ningún jugador atacado, mostrar un mensaje de error
-                echo "Error: No se encontró ningún jugador atacado para el detalle con ID $id_detalle";
+                echo '<script>
+                alert("Este enemigo se ha eliminado");
+                window.location = "enemigo.php?id_detalle=' . $id_detalle . '";
+              </script>';
                 exit();
             }
         } catch (PDOException $e) {

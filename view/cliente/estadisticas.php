@@ -20,12 +20,14 @@ $username = $_SESSION['username'];
 // Consulta SQL para obtener los datos con nombres en lugar de IDs
 $sql = "SELECT db.id_detalle, db.id_jugador_atacante, db.id_jugador_atacado, db.id_sala, 
                m.nombre AS nombre_mundo, a.nombre AS nombre_agente, 
-               ar.nombre AS nombre_arma, db.puntos_vida 
+               ar.nombre AS nombre_arma, db.puntos_vida, e.estado
         FROM detalles db
         LEFT JOIN mundo m ON db.id_mundo = m.id_mundo
         LEFT JOIN agente a ON db.id_agente = a.id_agente
         LEFT JOIN arma ar ON db.id_arma = ar.id_arma
-        WHERE db.id_jugador_atacante = :username";
+        LEFT JOIN estado e ON db.id_estado = e.id_estado
+        WHERE db.id_jugador_atacante = :username
+        ORDER BY db.id_detalle DESC";
 
 // Preparar la consulta
 $stmt = $con->prepare($sql);
@@ -61,6 +63,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>Arma</th>
                     <th>Agente</th>
                     <th>Vida</th>
+                    <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
@@ -76,6 +79,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     echo "<td>".$row['nombre_arma']."</td>";
                     echo "<td>".$row['nombre_agente']."</td>";
                     echo "<td>".$row['puntos_vida']."</td>";
+                    echo "<td>".$row['estado']."</td>";
                     echo "</tr>";
                 }
                 ?>

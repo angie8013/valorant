@@ -133,6 +133,11 @@ if (isset($_GET['id_detalle'])) {
                 <span class="label">Seleccionar oponente</span>
             </span>
         </button>
+        <button class="valorant-btn" id="redireccionarBtn2">
+            <span class="underlay">
+                <span class="label">Seleccionar oponente</span>
+            </span>
+        </button>
     </center>
 
     <script>
@@ -144,6 +149,15 @@ if (isset($_GET['id_detalle'])) {
 
             // Redireccionar a enemigos.php con el mismo id_detalle
             window.location.href = "enemigos.php?id_detalle=" + id_detalle;
+        });
+    </script>
+    <script>
+        // Función para redireccionar al mismo id_detalle
+        document.getElementById("redireccionarBtn2").addEventListener("click", function() {
+            // Obtener el id_detalle de la URL actual
+
+            // Redireccionar a enemigos.php con el mismo id_detalle
+            window.location.href = "mapa.php";
         });
     </script>
    <script>

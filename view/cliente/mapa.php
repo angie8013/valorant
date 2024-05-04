@@ -15,7 +15,7 @@ if (!isset($_SESSION['username'])) {
 
 try {
     // Consulta para obtener los IDs de las salas y sus respectivos mundos
-    $sql = "SELECT sala.id_sala, mundo.nombre AS nombre_mundo, mundo.mundo AS imagen_mundo 
+    $sql = "SELECT sala.id_sala, sala.nivel, mundo.nombre AS nombre_mundo, mundo.mundo AS imagen_mundo 
             FROM sala 
             INNER JOIN mundo ON sala.id_mundo = mundo.id_mundo 
             WHERE sala.nivel = (SELECT id_puntos FROM jugador WHERE username = :username)";
@@ -52,6 +52,7 @@ try {
             if ($num_rows > 0) {
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     $id_sala = $row["id_sala"];
+                    $nivel = $row["nivel"];
                     $nombre_mundo = $row["nombre_mundo"];
                     $imagen_mundo = $row["imagen_mundo"];
             ?>
@@ -59,7 +60,7 @@ try {
                         <img src='data:image/jpeg;base64,<?php echo base64_encode($imagen_mundo); ?>' alt="Mapa de <?php echo $nombre_mundo; ?>">
                         <div class="card__data">
                             <div class="card__description">
-                                <h2 class="card-title">Mapa nivel <?php echo $id_sala; ?></h2>
+                                <h2 class="card-title">Mapa nivel <?php echo $nivel; ?></h2>
                                 <strong class="card-text">Nombre: <?php echo $nombre_mundo; ?></strong> <br>
                                 <form action="select_sala.php" method="post">
                                     <input type="hidden" name="id_sala" value="<?php echo $id_sala; ?>">

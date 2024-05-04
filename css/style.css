@@ -12,7 +12,6 @@ body{
 video {
   position: fixed;
   width: 100%;
- 
   right: 0;
   bottom: 0;
   min-width: 105%;
@@ -20,12 +19,12 @@ video {
   transform: translatey(calc((200% - 100vw) / 2));
   z-index: -2;
 }
-.sidebar{
+.sidebar {
   height: 100vh;
   position: fixed;
   background-color: transparent;
   backdrop-filter: blur(9px);
-  width: 80px;
+  width: 95px;
   transition: .4s linear;
   padding: 10px 14px;
 }
@@ -42,8 +41,8 @@ video {
 }
 
 .logo img{
-  width: 50px;
-  height: 45px;
+  width: 70px;
+  height: 60px;
   border-radius: 50%;
   margin-right: 14px;
 }
@@ -105,25 +104,24 @@ video {
   transition: .4s linear;
 }
 
-
-.sidebar-link{
+.sidebar-link {
   height: 52px;
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
+  margin-left: 5px;
+  margin-bottom: 40px;
   color: rgb(255, 255, 255);
   text-transform: uppercase;
-  font-size: 17px;
+  font-size: 14px;
   text-decoration: none;
   overflow: hidden;
   position: relative;
   border-radius: 12px;
-
 }
 
-.sidebar-link i{
+.sidebar-link i {
   min-width: 52px;
-  font-size: 35px;
+  font-size: 50px;
   text-align: center;
 }
 
